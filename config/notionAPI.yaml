@@ -1,0 +1,11 @@
+notion:
+  token: "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"
+
+  # コピー元
+  src_page_id: "2adcd55722618022834fc77653064573"
+
+  # コピー先
+  dst_page_id: "2adcd5572261800b9b65f99cdecd7b2e"
+
+OPENAI:
+  api_key: "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
