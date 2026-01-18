@@ -145,3 +145,20 @@ class NotionClient:
 
         logger.info(f"Found {len(child_page_ids)} child pages")
         return child_page_ids
+
+    def append_block_children(self, block_id: str, children: list) -> dict:
+        """
+        Append blocks to a parent block (or page)
+
+        Args:
+            block_id: ID of the parent block or page
+            children: List of blocks to append
+
+        Returns:
+            The API response dictionary
+        """
+        logger.info(f"Appending {len(children)} blocks to: {block_id}")
+        return self.client.blocks.children.append(
+            block_id=block_id,
+            children=children
+        )

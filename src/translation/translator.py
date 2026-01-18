@@ -1,10 +1,6 @@
-"""
-Text Translator using OpenAI ChatGPT API
-Translates Chinese text to Japanese
-"""
-
 import os
 from openai import OpenAI
+import re
 import logging
 from typing import Optional
 
@@ -26,7 +22,11 @@ class TextTranslator:
         self.default_prompt = (
             "あなたは中国語から日本語への翻訳専門家です。"
             "以下の中国語テキストを自然な日本語に翻訳してください。"
-            "専門用語は正確に、文脈を考慮して翻訳してください。\n\n"
+            "専門用語は正確に、文脈を考慮して翻訳してください。\n"
+            "【重要】\n"
+            "・URL、ファイルパス、コードブロック、数値のみの行は翻訳せず、そのまま出力してください。\n"
+            "・「翻訳できません」「読み込めません」などの謝罪や説明は一切不要です。\n"
+            "・翻訳対象ではないと判断した場合は、原文をそのまま出力してください。\n\n"
             "中国語テキスト:\n{text}"
         )
 
@@ -44,6 +44,17 @@ class TextTranslator:
         """
         if not chinese_text or not chinese_text.strip():
             return ""
+
+        # Check if text is a URL
+        if re.match(r'^https?://', chinese_text.strip()):
+            logger.info(f"Skipping translation for URL: {chinese_text[:50]}...")
+            return chinese_text
+
+        # Check if text is just numbers or simple alphanumeric (like checking IDs or file paths)
+        # Matches strings like "123", "v1.0", "/path/to/file", "filename.ext"
+        if re.match(r'^[\w\-\./]+$', chinese_text.strip()):
+            logger.info(f"Skipping translation for alphanumeric/path: {chinese_text[:50]}...")
+            return chinese_text
 
         logger.info(f"Translating text: {chinese_text[:50]}...")
 

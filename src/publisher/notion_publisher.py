@@ -79,12 +79,36 @@ class NotionPublisher:
         # Process blocks and create translated version
         translated_blocks = self._process_blocks(source_blocks)
 
-        # Create new Japanese page
+        # Slice blocks into chunks of 100 (Notion API limit)
+        LIMIT = 100
+        first_batch = translated_blocks[:LIMIT]
+        remaining_batches = [translated_blocks[i:i + LIMIT] for i in range(LIMIT, len(translated_blocks), LIMIT)]
+
+        # Create new Japanese page with first batch
         new_page = self.notion.create_page(
             parent_id=destination_parent_id,
             title=final_title,
-            children=translated_blocks
+            children=first_batch
         )
+
+        new_page_id = new_page["id"]
+        logger.info(f"Created initial page with {len(first_batch)} blocks. ID: {new_page_id}")
+
+        # Append remaining batches
+        if remaining_batches:
+            logger.info(f"Appending {len(remaining_batches)} additional batches...")
+            for i, batch in enumerate(remaining_batches, 1):
+                try:
+                    logger.info(f"Appending batch {i}/{len(remaining_batches)} ({len(batch)} blocks)")
+                    self.notion.append_block_children(
+                        block_id=new_page_id,
+                        children=batch
+                    )
+                except Exception as e:
+                    logger.error(f"Failed to append batch {i}: {e}")
+                    # Continue attempting valid batches instead of full failure? 
+                    # For now just log, but page creation succeeded so we return blocking error maybe
+                    raise e
 
         # Update original page title with "done" prefix
         self.notion.update_page_title(
@@ -128,6 +152,13 @@ class NotionPublisher:
                 if text_block:
                     translated_blocks.append(text_block)
 
+            elif block_type == "table":
+                # Add placeholder for tables (cannot auto-translate complex structures)
+                logger.info("Skipping table block (not supported for auto-translation)")
+                translated_blocks.append(
+                    self.formatter.create_text_block("📊 [テーブル: 自動翻訳未対応。元のページを参照してください]")
+                )
+
             else:
                 logger.warning(f"Unsupported block type: {block_type}")
                 # Could add support for more block types here
@@ -158,17 +189,21 @@ class NotionPublisher:
             logger.warning("No image URL found")
             return self.formatter.create_text_block("画像URLが見つかりません")
 
-        # Extract and translate image text
-        result = self.image_translator.extract_and_translate_image_text(image_url)
-        translations = result.get("translations", [])
+        # Skip image text extraction and translation
+        # result = self.image_translator.extract_and_translate_image_text(image_url)
+        # translations = result.get("translations", [])
 
-        # Create toggle block with image and translation table
-        toggle_block = self.formatter.create_image_translation_toggle(
-            image_url=image_url,
-            translations=translations
-        )
+        # Simply return the image block without toggle or translation
+        logger.info(f"Skipping image translation for: {image_url}")
 
-        return toggle_block
+        return {
+            "object": "block",
+            "type": "image",
+            "image": {
+                "type": "external",
+                "external": {"url": image_url}
+            }
+        }
 
     def _process_text_block(
         self,

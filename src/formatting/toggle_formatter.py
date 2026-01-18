@@ -107,14 +107,31 @@ class ToggleFormatter:
             }
         })
 
-        # Add translation table if translations exist
+        # Add translation as formatted text instead of table (tables don't work nested in toggles)
         if translations:
-            rows = [[chinese, japanese] for chinese, japanese in translations]
-            table_block = ToggleFormatter.create_table_block(
-                headers=["中国語", "日本語"],
-                rows=rows
-            )
-            content_blocks.append(table_block)
+            # Create a bulleted list for each translation pair
+            for chinese, japanese in translations:
+                content_blocks.append({
+                    "object": "block",
+                    "type": "paragraph",
+                    "paragraph": {
+                        "rich_text": [
+                            {
+                                "type": "text",
+                                "text": {"content": f"🇨🇳 {chinese}"},
+                                "annotations": {"bold": True}
+                            },
+                            {
+                                "type": "text",
+                                "text": {"content": " → "}
+                            },
+                            {
+                                "type": "text",
+                                "text": {"content": f"🇯🇵 {japanese}"}
+                            }
+                        ]
+                    }
+                })
         else:
             # Add note if no text in image
             content_blocks.append({
