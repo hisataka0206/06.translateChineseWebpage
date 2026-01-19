@@ -15,6 +15,7 @@ from src.notion.client import NotionClient
 from src.translation.translator import TextTranslator
 from src.translation.image_translator import ImageTextTranslator
 from src.publisher.notion_publisher import NotionPublisher
+from src.publisher.x_publisher import XPublisher
 
 
 def setup_logging(config: dict) -> logging.Logger:
@@ -213,6 +214,9 @@ def main():
                     else:
                          logger.info(f"✓ Successfully translated: {result['original_title']}")
                          logger.info(f"  New page ID: {result['new_page_id']}")
+                
+
+
                 elif result["status"] == "skipped":
                     logger.info(f"⊘ Skipped (already done): {source_page_id}")
 

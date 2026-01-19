@@ -225,3 +225,51 @@ class NotionClient:
             page_id=page_id,
             archived=True
         )
+
+    def update_page_properties(self, page_id: str, properties: dict) -> dict:
+        """
+        Update arbitrary page properties
+
+        Args:
+            page_id: Notion page ID
+            properties: Dictionary of properties to update
+
+        Returns:
+            Updated page object
+        """
+        logger.info(f"Updating properties for page: {page_id}")
+        return self.client.pages.update(
+            page_id=page_id,
+            properties=properties
+        )
+
+    def query_database(self, database_id: str, filter_criteria: dict = None) -> list:
+        """
+        Query a database for pages matching criteria
+
+        Args:
+            database_id: ID of the database to query
+            filter_criteria: Notion API filter object
+
+        Returns:
+            List of page objects
+        """
+        logger.info(f"Querying database: {database_id}")
+        results = []
+        has_more = True
+        start_cursor = None
+        
+        while has_more:
+            kwargs = {
+                "database_id": database_id,
+                "start_cursor": start_cursor
+            }
+            if filter_criteria:
+                kwargs["filter"] = filter_criteria
+
+            response = self.client.databases.query(**kwargs)
+            results.extend(response["results"])
+            has_more = response["has_more"]
+            start_cursor = response.get("next_cursor")
+            
+        return results

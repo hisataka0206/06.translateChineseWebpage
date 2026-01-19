@@ -264,6 +264,14 @@ grep ERROR logs/translation.log
 ・DB化して保存すること
 
 
+### 6.Xへの投稿
+・DBのX post列がGoであれば、投稿する
+・URLと広告文を投稿する
+・広告文はx_prompt.yamlに従って生成し、DBのX comment欄に記載する
+・config.yamlにXの投稿設定を追加する
+・投稿したらDBのX post列をDoneに変更する
+
+
 ## トラブルシューティング
 
 ### エラー: "Missing OPENAI_API_KEY environment variable"

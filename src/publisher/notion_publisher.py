@@ -9,7 +9,12 @@ from src.notion.client import NotionClient
 from src.translation.translator import TextTranslator
 from src.translation.image_translator import ImageTextTranslator
 from src.formatting.toggle_formatter import ToggleFormatter
+from src.notion.client import NotionClient
+from src.translation.translator import TextTranslator
+from src.translation.image_translator import ImageTextTranslator
+from src.formatting.toggle_formatter import ToggleFormatter
 from src.notion.parser import NotionBlockParser
+from src.publisher.x_publisher import XPublisher # Imported for text generation only
 
 logger = logging.getLogger(__name__)
 
@@ -178,6 +183,7 @@ class NotionPublisher:
             return {
                 "status": "success",
                 "source_page_id": source_page_id,
+                "new_page_id": new_page_id,
                 "action": "move_only",
                 "destination_parent_id": formatted_dest_id,
                 "original_title": original_title
@@ -221,6 +227,38 @@ class NotionPublisher:
              from datetime import datetime
              today_str = datetime.now().strftime("%Y-%m-%d")
              additional_props["Date"] = {"date": {"start": today_str}}
+             
+             # Generate X Post Text and save to "X comment"
+             try:
+                 # We need to initialize XPublisher with some config.
+                 # NotionPublisher doesn't hold the full config object currently, only clients.
+                 # We might need to pass config or load it.
+                 # Easier: Load config inside here or modify init.
+                 # Let's load generic config for now to keep init simple.
+                 import yaml
+                 with open("config/config.yaml", "r") as f:
+                     full_config = yaml.safe_load(f)
+                 
+                 xp = XPublisher(full_config)
+                 # Generate text using title (and maybe snippet)
+                 # For skip mode (Copy), we use original title.
+                 # For translate mode, we use translated title (final_title).
+                 
+                 # Logic for generation:
+                 gen_title = final_title if not skip_translation else original_title
+                 
+                 # Generate
+                 post_text = xp.generate_post_text(gen_title, gen_title)
+                 
+                 # Add to properties
+                 # Property name: "X comment" (rich_text)
+                 additional_props["X comment"] = {
+                     "rich_text": [{"text": {"content": post_text}}]
+                 }
+                 logger.info(f"Generated X post text: {post_text[:30]}...")
+                 
+             except Exception as e:
+                 logger.error(f"Failed to generate X post text during publish: {e}")
 
         # Create new Japanese page with first batch
         new_page = self.notion.create_page(
