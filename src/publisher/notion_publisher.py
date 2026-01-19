@@ -37,17 +37,61 @@ class NotionPublisher:
         self.parser = NotionBlockParser()
         self.formatter = ToggleFormatter()
 
+    UNWANTED_TEXTS = [
+        "点击蓝字 关注我们",
+        "关注公众号，点击公众号主页右上角“ · · · ”，设置星标，实时关注人形机器人新鲜的行业动态与知识！"
+    ]
+
+    @staticmethod
+    def _format_uuid(uuid_str: str) -> str:
+        """
+        Format a UUID string to have hyphens (XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX)
+        """
+        if not uuid_str:
+            return uuid_str
+        
+        # If already formatted with hyphens, return as is (simple check)
+        if "-" in uuid_str and len(uuid_str) == 36:
+            return uuid_str
+            
+        # If length is 32 (no hyphens), insert them
+        if len(uuid_str) == 32:
+            return f"{uuid_str[:8]}-{uuid_str[8:12]}-{uuid_str[12:16]}-{uuid_str[16:20]}-{uuid_str[20:]}"
+            
+        return uuid_str
+
+    def _clean_text(self, text: str) -> str:
+        """
+        Remove unwanted phrases from text
+
+        Args:
+            text: Original text
+
+        Returns:
+            Cleaned text, or None if empty
+        """
+        if not text:
+            return None
+
+        for unwanted in self.UNWANTED_TEXTS:
+            text = text.replace(unwanted, "")
+
+        cleaned = text.strip()
+        return cleaned if cleaned else None
+
     def translate_and_publish_page(
         self,
         source_page_id: str,
-        destination_parent_id: str
+        destination_parent_id: str,
+        processed_parent_id: str
     ) -> Dict[str, Any]:
         """
-        Translate a Chinese Notion page and publish to Japanese parent
+        Translate a Chinese Notion page, publish to Japanese parent, and move source to processed parent
 
         Args:
             source_page_id: Source Chinese page ID
             destination_parent_id: Destination parent page ID for Japanese version
+            processed_parent_id: Destination parent ID for processed source pages
 
         Returns:
             Dict with result information
@@ -57,24 +101,34 @@ class NotionPublisher:
         # Get source page
         source_page = self.notion.get_page(source_page_id)
 
-        # Check if already translated
-        if self.notion.is_already_translated(source_page):
-            logger.info(f"Page already translated (title starts with 'done'): {source_page_id}")
-            return {
-                "status": "skipped",
-                "reason": "already_translated",
-                "source_page_id": source_page_id
-            }
+        # Skip check for "done" prefix as we are now moving pages
+        # But we check for title generation
 
-        # Get page title and translate
+        # Get page blocks (content) first to help with title generation if needed
+        source_blocks = self.notion.get_page_blocks(source_page_id)
+
+        # Get page title
         original_title = self.parser.get_page_title(source_page)
-        translated_title = self.text_translator.translate(original_title)
-        final_title = f"done {translated_title}"
+        
+        # If title is missing or Untitled, generate it from content
+        if not original_title or original_title.strip() == "Untitled":
+            logger.info("Title is missing or Untitled. Generating title from content...")
+            # Extract first few text blocks for context
+            content_snippet = ""
+            for block in source_blocks[:10]:
+                text = self.parser.extract_text_from_block(block)
+                if text:
+                    content_snippet += text + "\n"
+            
+            generated_title = self.text_translator.generate_title(content_snippet)
+            translated_title = generated_title
+            original_title = f"(Auto-Generated) {translated_title}" # Keep a note it was generated
+        else:
+            translated_title = self.text_translator.translate(original_title)
+
+        final_title = f"{translated_title}"
 
         logger.info(f"Translating page: {original_title} -> {translated_title}")
-
-        # Get page blocks (content)
-        source_blocks = self.notion.get_page_blocks(source_page_id)
 
         # Process blocks and create translated version
         translated_blocks = self._process_blocks(source_blocks)
@@ -110,11 +164,19 @@ class NotionPublisher:
                     # For now just log, but page creation succeeded so we return blocking error maybe
                     raise e
 
-        # Update original page title with "done" prefix
-        self.notion.update_page_title(
+        # Move source page to processed parent
+        formatted_parent_id = self._format_uuid(processed_parent_id)
+        
+        logger.info(f"Moving source page {source_page_id} to processed folder {formatted_parent_id}")
+        self.notion.move_page(
             page_id=source_page_id,
-            new_title=f"done {original_title}"
+            target_parent_id=formatted_parent_id
         )
+        
+        # If title was auto-generated, fix the source title to be clean
+        if "(Auto-Generated)" in original_title:
+             clean_generated_title = original_title.replace("(Auto-Generated) ", "")
+             self.notion.update_page_title(source_page_id, clean_generated_title)
 
         logger.info(f"Translation complete. New page ID: {new_page['id']}")
 
@@ -222,6 +284,9 @@ class NotionPublisher:
         """
         # Extract text
         text = self.parser.extract_text_from_block(block)
+
+        # Clean text first
+        text = self._clean_text(text)
 
         if not text or not text.strip():
             return None

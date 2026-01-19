@@ -156,9 +156,16 @@ def main():
         # Get source and destination from config
         source_page_ids = config["notion"]["source_page_ids"]
         destination_parent_id = config["notion"]["destination_parent_id"]
+        processed_source_parent_id = config["notion"].get("processed_source_parent_id")
 
+        if not processed_source_parent_id or processed_source_parent_id == "replace-with-actual-page-id":
+             logger.warning("Warning: 'processed_source_parent_id' is not configured correctly.")
+             # Fallback or exit? For now just warn, but the method call will fail if not provided.
+             # Ideally we should ensure config is correct.
+        
         logger.info(f"Found {len(source_page_ids)} parent pages to process")
         logger.info(f"Destination parent ID: {destination_parent_id}")
+        logger.info(f"Processed pages destination: {processed_source_parent_id}")
 
         # Discover all child pages from parent pages
         all_pages_to_translate = []
@@ -179,7 +186,8 @@ def main():
             try:
                 result = publisher.translate_and_publish_page(
                     source_page_id=source_page_id,
-                    destination_parent_id=destination_parent_id
+                    destination_parent_id=destination_parent_id,
+                    processed_parent_id=processed_source_parent_id
                 )
                 results.append(result)
 

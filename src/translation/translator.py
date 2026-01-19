@@ -91,3 +91,45 @@ class TextTranslator:
             List of translated Japanese texts
         """
         return [self.translate(text) for text in texts]
+
+    def generate_title(self, content_snippet: str) -> str:
+        """
+        Generate a title from content snippet
+
+        Args:
+            content_snippet: First few lines/paragraphs of the content
+
+        Returns:
+            Generated title in Japanese
+        """
+        if not content_snippet or not content_snippet.strip():
+            return "Untitled Page"
+
+        prompt = (
+            "あなたは編集者です。\n"
+            "以下の記事の冒頭部分を読んで、内容を適切に表す30文字以内の日本語タイトルを作成してください。\n"
+            "タイトルのみを出力し、カギカッコや説明は含めないでください。\n\n"
+            "記事冒頭:\n"
+            f"{content_snippet[:1000]}"
+        )
+
+        try:
+            response = self.client.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": "あなたは優秀な編集者です。"},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.3,
+                max_tokens=100
+            )
+
+            title = response.choices[0].message.content.strip()
+            # Remove quotes if present
+            title = re.sub(r'^["「『]|["」』]$', '', title)
+            logger.info(f"Generated title: {title}")
+            return title
+
+        except Exception as e:
+            logger.error(f"Title generation error: {e}")
+            return "タイトル自動生成エラー"

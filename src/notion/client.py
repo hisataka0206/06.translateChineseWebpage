@@ -146,6 +146,29 @@ class NotionClient:
         logger.info(f"Found {len(child_page_ids)} child pages")
         return child_page_ids
 
+    def move_page(self, page_id: str, target_parent_id: str) -> dict:
+        """
+        Move a page to a new parent
+
+        Args:
+            page_id: Page ID to move
+            target_parent_id: New parent page ID
+
+        Returns:
+            Updated page object
+        """
+        logger.info(f"Moving page {page_id} to parent {target_parent_id}")
+        return self.client.request(
+            path=f"pages/{page_id}/move",
+            method="POST",
+            body={
+                "parent": {
+                    "type": "page_id",
+                    "page_id": target_parent_id
+                }
+            }
+        )
+
     def append_block_children(self, block_id: str, children: list) -> dict:
         """
         Append blocks to a parent block (or page)
