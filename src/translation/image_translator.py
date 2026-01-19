@@ -18,9 +18,10 @@ logger = logging.getLogger(__name__)
 class ImageTextTranslator:
     """Extract and translate text from images"""
 
-    def __init__(self):
+    def __init__(self, api_key: str = None):
         """Initialize image translator with OpenAI API"""
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.client = OpenAI(api_key=self.api_key)
 
     def _download_and_encode_image(self, image_url: str) -> str:
         """

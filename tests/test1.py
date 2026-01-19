@@ -29,10 +29,6 @@ def load_notion_config(path="../config/notionAPI.yaml"):
     return notion
 
 
-# NOTION_TOKEN = "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"
-# ID1 = "2adcd55722618022834fc77653064573"  # コピー元ページID
-# ID2 = "2adcd5572261800b9b65f99cdecd7b2e"  # コピー先ページID
-
 
 # ログを最小化、正常時は print しない
 def info(msg):

@@ -79,7 +79,7 @@ class NotionClient:
         title_text = title_array[0].get("plain_text", "")
         return title_text.lower().startswith("done")
 
-    def create_page(self, parent_id: str, title: str, children: list) -> dict:
+    def create_page(self, parent_id: str, title: str, children: list, is_database: bool = False, additional_properties: dict = None) -> dict:
         """
         Create a new Notion page with translated content
 
@@ -87,19 +87,39 @@ class NotionClient:
             parent_id: Parent page/database ID
             title: Page title (should start with 'done')
             children: List of block objects for page content
+            is_database: Whether the target parent is a database
+            additional_properties: Dictionary of additional properties to set (key: property name, value: property object)
 
         Returns:
             Created page object
         """
         logger.info(f"Creating page: {title}")
+        
+        if is_database:
+            parent = {"database_id": parent_id}
+            # When parent is a database, the title property key must match the DB schema.
+            # We assume the default "Name".
+            title_property_name = "Name"
+        else:
+            parent = {"page_id": parent_id}
+            # When parent is a page, the title property key IS "title" (fixed).
+            title_property_name = "title"
+
+        # Base properties with title
+        properties = {
+            title_property_name: {
+                "title": [{"text": {"content": title}}]
+            }
+        }
+
+        # Merge additional properties if provided
+        if additional_properties:
+            properties.update(additional_properties)
+
         return self.client.pages.create(
-            parent={"page_id": parent_id},
-            properties={
-                "title": {
-                    "title": [{"text": {"content": title}}]
-                }
-            },
-            children=children
+            parent=parent,
+            properties=properties,
+            children=children or []
         )
 
     def update_page_title(self, page_id: str, new_title: str) -> dict:
@@ -146,26 +166,30 @@ class NotionClient:
         logger.info(f"Found {len(child_page_ids)} child pages")
         return child_page_ids
 
-    def move_page(self, page_id: str, target_parent_id: str) -> dict:
+    def move_page(self, page_id: str, target_parent_id: str, is_database: bool = False) -> dict:
         """
         Move a page to a new parent
 
         Args:
             page_id: Page ID to move
-            target_parent_id: New parent page ID
+            target_parent_id: New parent page/database ID
+            is_database: Whether the target parent is a database
 
         Returns:
             Updated page object
         """
-        logger.info(f"Moving page {page_id} to parent {target_parent_id}")
+        logger.info(f"Moving page {page_id} to parent {target_parent_id} (is_database={is_database})")
+        
+        parent_obj = {
+            "type": "database_id" if is_database else "page_id",
+            "database_id" if is_database else "page_id": target_parent_id
+        }
+
         return self.client.request(
             path=f"pages/{page_id}/move",
             method="POST",
             body={
-                "parent": {
-                    "type": "page_id",
-                    "page_id": target_parent_id
-                }
+                "parent": parent_obj
             }
         )
 
@@ -184,4 +208,20 @@ class NotionClient:
         return self.client.blocks.children.append(
             block_id=block_id,
             children=children
+        )
+
+    def archive_page(self, page_id: str) -> dict:
+        """
+        Archive a page (effectively deleting it from view)
+
+        Args:
+            page_id: Notion page ID
+
+        Returns:
+            Updated page object
+        """
+        logger.info(f"Archiving page: {page_id}")
+        return self.client.pages.update(
+            page_id=page_id,
+            archived=True
         )

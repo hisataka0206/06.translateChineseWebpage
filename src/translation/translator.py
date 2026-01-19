@@ -10,14 +10,16 @@ logger = logging.getLogger(__name__)
 class TextTranslator:
     """Translator for Chinese to Japanese text"""
 
-    def __init__(self, prompt_template: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, prompt_template: Optional[str] = None):
         """
         Initialize translator with OpenAI API
 
         Args:
+            api_key: OpenAI API key (optional, falls back to env var if not provided)
             prompt_template: Custom prompt template for translation
         """
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        self.api_key = api_key or os.getenv("OPENAI_API_KEY")
+        self.client = OpenAI(api_key=self.api_key)
 
         self.default_prompt = (
             "あなたは中国語から日本語への翻訳専門家です。"

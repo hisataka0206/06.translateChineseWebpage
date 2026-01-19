@@ -260,6 +260,10 @@ grep ERROR logs/translation.log
 
 ２．ページによって、タイトルが設定されていないことがあります。中身を踏まえてタイトルを設定してください。
 
+### 5.翻訳されたページに関する編集
+・DB化して保存すること
+
+
 ## トラブルシューティング
 
 ### エラー: "Missing OPENAI_API_KEY environment variable"

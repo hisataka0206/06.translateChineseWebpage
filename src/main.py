@@ -120,15 +120,15 @@ def main():
         # Notion API key is directly in config
         notion_api_key = config["notion"].get("token")
 
-        # OpenAI API key from environment variable
-        openai_api_key = os.getenv(config["openai"]["api_key_env"])
+        # OpenAI API key: prioritize config, then env var
+        openai_api_key = config["openai"].get("api_key") or os.getenv(config["openai"]["api_key_env"])
 
         if not notion_api_key:
             logger.error("Missing Notion API token in config.yaml")
             sys.exit(1)
 
         if not openai_api_key:
-            logger.error(f"Missing {config['openai']['api_key_env']} environment variable")
+            logger.error("Missing OpenAI API key in config.yaml or environment variable")
             sys.exit(1)
 
         # Initialize clients
@@ -140,11 +140,17 @@ def main():
         custom_prompt = None
         if prompt_file:
             logger.info(f"Loading custom prompt from: {prompt_file}")
-            custom_prompt = load_prompt_template(prompt_file)
+            # Ensure path is relative to repo root if possible or absolute
+            prompt_path = prompt_file
+            if not os.path.exists(prompt_path):
+                 # Try relative to main.py dir? Or assumes cwd is root.
+                 pass 
+            custom_prompt = load_prompt_template(prompt_path)
 
         logger.info("Initializing translation services...")
-        text_translator = TextTranslator(prompt_template=custom_prompt)
-        image_translator = ImageTextTranslator()
+        # Pass API key explicitly
+        text_translator = TextTranslator(api_key=openai_api_key, prompt_template=custom_prompt)
+        image_translator = ImageTextTranslator(api_key=openai_api_key)
 
         # Initialize publisher
         publisher = NotionPublisher(
@@ -157,25 +163,34 @@ def main():
         source_page_ids = config["notion"]["source_page_ids"]
         destination_parent_id = config["notion"]["destination_parent_id"]
         processed_source_parent_id = config["notion"].get("processed_source_parent_id")
+        
+        # Get skip_translation flag
+        skip_translation = config["openai"].get("skip_translation", False)
 
         if not processed_source_parent_id or processed_source_parent_id == "replace-with-actual-page-id":
              logger.warning("Warning: 'processed_source_parent_id' is not configured correctly.")
-             # Fallback or exit? For now just warn, but the method call will fail if not provided.
-             # Ideally we should ensure config is correct.
         
         logger.info(f"Found {len(source_page_ids)} parent pages to process")
         logger.info(f"Destination parent ID: {destination_parent_id}")
         logger.info(f"Processed pages destination: {processed_source_parent_id}")
+        logger.info(f"Skip Translation Mode: {skip_translation}")
 
         # Discover all child pages from parent pages
         all_pages_to_translate = []
         for parent_id in source_page_ids:
+            # Clean parent_id if it has query params
+            if "?" in parent_id:
+                 parent_id = parent_id.split("?")[0]
+            
             logger.info(f"\nDiscovering child pages from parent: {parent_id}")
-            child_ids = notion_client.get_child_page_ids(parent_id)
-            all_pages_to_translate.extend(child_ids)
+            try:
+                child_ids = notion_client.get_child_page_ids(parent_id)
+                all_pages_to_translate.extend(child_ids)
+            except Exception as e:
+                logger.error(f"Failed to get child pages for {parent_id}: {e}")
 
         logger.info(f"\n{'='*60}")
-        logger.info(f"Total child pages discovered: {len(all_pages_to_translate)}")
+        logger.info(f"Total child pages to process: {len(all_pages_to_translate)}")
         logger.info(f"{'='*60}\n")
 
         # Process each child page
@@ -187,15 +202,19 @@ def main():
                 result = publisher.translate_and_publish_page(
                     source_page_id=source_page_id,
                     destination_parent_id=destination_parent_id,
-                    processed_parent_id=processed_source_parent_id
+                    processed_parent_id=processed_source_parent_id,
+                    skip_translation=skip_translation
                 )
                 results.append(result)
 
                 if result["status"] == "success":
-                    logger.info(f"✓ Successfully translated: {result['original_title']}")
-                    logger.info(f"  New page ID: {result['new_page_id']}")
+                    if result.get("action") == "move_only":
+                         logger.info(f"✓ Successfully moved: {source_page_id} to {result.get('destination_parent_id')}")
+                    else:
+                         logger.info(f"✓ Successfully translated: {result['original_title']}")
+                         logger.info(f"  New page ID: {result['new_page_id']}")
                 elif result["status"] == "skipped":
-                    logger.info(f"⊘ Skipped (already translated): {source_page_id}")
+                    logger.info(f"⊘ Skipped (already done): {source_page_id}")
 
             except Exception as e:
                 logger.error(f"✗ Error processing page {source_page_id}: {e}")

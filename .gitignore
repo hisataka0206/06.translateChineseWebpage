@@ -52,6 +52,7 @@ data/input/*
 !data/input/.gitkeep
 config/config.yaml
 config/config.backup.yaml
+refers.md
 
 # OS
 .DS_Store
