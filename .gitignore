@@ -50,6 +50,8 @@ data/output/*
 !data/output/.gitkeep
 data/input/*
 !data/input/.gitkeep
+config/config.yaml
+config/config.backup.yaml
 
 # OS
 .DS_Store

@@ -1,17 +1,17 @@
 # Notion API Configuration
 notion:
   # Notion API integration token
-  token: "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"
+  token: "replace-with-your-notion-token"
 
-  # Source: Chinese pages to translate
+  # Source: Chinese pages to translate (list of page IDs)
   source_page_ids:
-    - "2adcd55722618022834fc77653064573"
+    - "replace-with-source-page-id"
 
   # Destination: Parent page for processed source pages (archive)
-  processed_source_parent_id: "2adcd55722618060b7ced689a41d00ab"
+  processed_source_parent_id: "replace-with-archive-page-id"
 
   # Destination: Parent page for Japanese translations
-  destination_parent_id: "2adcd5572261800b9b65f99cdecd7b2e"
+  destination_parent_id: "replace-with-destination-page-id"
 
 # OpenAI API Configuration
 openai:
@@ -22,7 +22,7 @@ openai:
   # Model to use for translation
   model: "gpt-4"
 
-  # Model for image analysis (updated from deprecated gpt-4-vision-preview)
+  # Model for image analysis
   vision_model: "gpt-4o"
 
   # Temperature for translation (0.0-1.0, lower = more deterministic)
