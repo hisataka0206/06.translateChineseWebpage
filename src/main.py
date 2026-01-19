@@ -249,7 +249,16 @@ def main():
                     logger.warning(f"  - {result['source_page_id']}: {result.get('error', 'Unknown error')}")
 
         logger.info("\nTranslation service completed!")
-
+                
+        # --- Execute X Publisher Script ---
+        logger.info("\n" + "=" * 60)
+        logger.info("Starting X Publisher...")
+        logger.info("=" * 60)
+        try:
+             import src.publish_x_from_db
+             src.publish_x_from_db.main()
+        except Exception as e:
+             logger.error(f"Failed to run X Publisher: {e}")
     except KeyboardInterrupt:
         logger.warning("\nProcess interrupted by user")
         sys.exit(1)
