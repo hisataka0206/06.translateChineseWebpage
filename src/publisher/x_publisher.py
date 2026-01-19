@@ -127,21 +127,38 @@ class XPublisher:
             return f"【翻訳記事】{title}" # Fallback
             
         try:
+        try:
             with open(prompt_path, "r") as f:
                 prompt_content = f.read()
-                
+            
+            # Initial messages
             messages = [
                 {"role": "system", "content": prompt_content},
                 {"role": "user", "content": f"Title: {title}\n\nSummary/Content: {content_summary}"}
             ]
             
-            response = self.openai_client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=0.7,
-                max_tokens=200 
-            )
-            return response.choices[0].message.content.strip()
+            max_retries = 3
+            for attempt in range(max_retries):
+                response = self.openai_client.chat.completions.create(
+                    model=self.model,
+                    messages=messages,
+                    temperature=0.7,
+                    max_tokens=200 
+                )
+                generated_text = response.choices[0].message.content.strip()
+                
+                # Check length (120 chars)
+                if len(generated_text) <= 120:
+                    return generated_text
+                
+                logger.warning(f"Generated text too long ({len(generated_text)} chars). Retrying ({attempt + 1}/{max_retries})...")
+                
+                # Add history for context and ask to shorten
+                messages.append({"role": "assistant", "content": generated_text})
+                messages.append({"role": "user", "content": "The text is too long. It must be strictly under 120 characters. Please rewrite it shorter."})
+            
+            logger.error("Failed to generate text under 120 characters after retries.")
+            return generated_text # Return best effort
             
         except Exception as e:
             logger.error(f"Failed to generate X post text: {e}")
