@@ -127,7 +127,6 @@ class XPublisher:
             return f"【翻訳記事】{title}" # Fallback
             
         try:
-        try:
             with open(prompt_path, "r") as f:
                 prompt_content = f.read()
             
