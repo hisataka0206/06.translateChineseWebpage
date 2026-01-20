@@ -20,7 +20,7 @@ class XPublisher:
         self.tokens_path = "config/x_tokens.json"
         
         # Load X credentials
-        x_conf = config.get("openai", {})
+        x_conf = config.get("x", {})
         
         
         # OAuth 2.0 (Old way)
@@ -34,9 +34,9 @@ class XPublisher:
         self.access_token_secret = os.getenv("X_ACCESS_TOKEN_SECRET") or x_conf.get("access_token_secret")
         
         # Load OpenAI for generation
-        api_key = os.getenv("OPENAI_API_KEY") or x_conf.get("api_key")
+        api_key = os.getenv("OPENAI_API_KEY") or config.get("openai", {}).get("api_key")
         self.openai_client = OpenAI(api_key=api_key)
-        self.model = x_conf.get("model", "gpt-4") # Use same model as translation or gpt-4
+        self.model = config.get("models", {}).get("x_post", "gpt-4")
         
         self.client: Optional[tweepy.Client] = None
         

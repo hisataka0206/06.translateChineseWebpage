@@ -149,9 +149,20 @@ def main():
             custom_prompt = load_prompt_template(prompt_path)
 
         logger.info("Initializing translation services...")
+        # Get models from config
+        translation_model = config.get("models", {}).get("translation", "gpt-4")
+        vision_model = config.get("models", {}).get("vision", "gpt-4o")
+        
         # Pass API key explicitly
-        text_translator = TextTranslator(api_key=openai_api_key, prompt_template=custom_prompt)
-        image_translator = ImageTextTranslator(api_key=openai_api_key)
+        text_translator = TextTranslator(
+            api_key=openai_api_key, 
+            prompt_template=custom_prompt,
+            model=translation_model
+        )
+        image_translator = ImageTextTranslator(
+            api_key=openai_api_key,
+            model=vision_model
+        )
 
         # Initialize publisher
         publisher = NotionPublisher(

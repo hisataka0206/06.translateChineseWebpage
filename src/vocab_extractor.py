@@ -33,7 +33,7 @@ class VocabExtractor:
         self.target_parent_id = self.config["vocab_extraction"]["target_parent_id"]
         
         # Gemini Setup
-        api_key = os.getenv("GOOGLE_API_KEY") or self.config.get("GOOGLE_API_KEY")
+        api_key = os.getenv("GOOGLE_API_KEY") or self.config.get("google", {}).get("api_key")
              
         if not api_key:
              # Fallback manual check for the specific indentation user might have used
@@ -44,7 +44,8 @@ class VocabExtractor:
             raise ValueError("GOOGLE_API_KEY not found in config.yaml or environment variables.")
             
         self.client = genai.Client(api_key=api_key)
-        self.model_name = self.config["openai"].get("vocab_model", "gemini-1.5-flash")
+        self.model_name = self.config.get("models", {}).get("vocab", "gemini-1.5-flash")
+        self.fallback_model_name = self.config.get("models", {}).get("vocab_fallback", "gemini-2.0-flash-001")
         
         self.output_file = self.config["vocab_extraction"].get("output_file", "robot_vocab.xlsx")
         self.chinese_dictionary_id = self.config["notion"].get("chinese_dictionary_id")
@@ -172,7 +173,7 @@ class VocabExtractor:
         [
           {
             "word": "Original Word (Simplified Chinese)",
-            "pinyin": "Pinyin",
+            "Pinyin": "Pinyin",
             "meaning_ja": "Japanese Translation",
             "context_cn": "Short context sentence from text"
           }
@@ -183,14 +184,64 @@ class VocabExtractor:
             # Enforce Rate Limit before making the call
             self._enforce_rate_limit()
             
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=[prompt + "\n\nText:\n" + text]
-            )
+            try:
+                # Primary: AI Studio (Free Tier)
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=[prompt + "\n\nText:\n" + text]
+                )
+            except Exception as e:
+                # Check for Rate Limit (429)
+                error_str = str(e)
+                if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
+                    logger.warning("AI Studio Rate Limit hit. Attempting fallback to Vertex AI...")
+                    
+                    # Fallback: Vertex AI (Paid/Higher Quota)
+                    # Requires GOOGLE_CLOUD_PROJECT and authentication (using same key for simplicity if possible, or ADC)
+                    # Note: python-genai usually uses specific client for Vertex, but here we can try using the same client 
+                    # if the user meant taking advantage of the same lib. 
+                    # However, standard practice is using `google.cloud.aiplatform` or different setup.
+                    # Given the user provided a REST URL, we'll try to use the GenAI client with vertex endpoint if supported,
+                    # or make a direct request if needed. 
+                    # The google-genai SDK v0.3 supports vertex if configured.
+                    
+                    project_id = os.getenv("GOOGLE_CLOUD_PROJECT") or self.config.get("google", {}).get("project_id")
+                    if not project_id:
+                        logger.error("GOOGLE_CLOUD_PROJECT not set. Cannot use Vertex AI fallback.")
+                        raise e
+                        
+                    # Re-init client for Vertex? Or just use the model name with prefix?
+                    # The user linked to `projects/.../global/.../gemini-2.0-flash-001`
+                    # We will try initializing a vertex client or just standard call with vertex model path.
+                    
+                    # Implementation using google-genai for Vertex:
+                    # client = genai.Client(vertexai=True, project=project_id, location="global")
+                    
+                    try:
+                        # Create a separate client for Vertex to avoid messing up the main one? 
+                        # Or just simple fallback.
+                        vertex_client = genai.Client(
+                            vertexai=True, 
+                            project=project_id, 
+                            location="global",
+                            api_key=self.client.api_key # Use same key if compatible, or it uses ADC
+                        )
+                        
+                        response = vertex_client.models.generate_content(
+                            model=self.fallback_model_name,
+                            contents=[prompt + "\n\nText:\n" + text]
+                        )
+                        logger.info("Vertex AI fallback successful.")
+                        
+                    except Exception as fallback_e:
+                        logger.error(f"Vertex AI fallback failed: {fallback_e}")
+                        raise e # Raise original 429 to trigger retry loop if fallback fails
+                else:
+                    raise e
             
             # cleanup code blocks if present
             cleaned_text = response.text.replace("```json", "").replace("```", "").strip()
-            return json.loads(cleaned_text)
+            return json.loads(cleaned_text, strict=False)
         except Exception as e:
             # Re-raise exception so the caller can handle 429 retries
             raise e
@@ -208,7 +259,7 @@ class VocabExtractor:
         for index, row in df.iterrows():
             word = row['word']
             # Safeguard NaN
-            pinyin = str(row['pinyin']) if pd.notna(row['pinyin']) else ""
+            Pinyin = str(row['Pinyin']) if pd.notna(row['Pinyin']) else ""
             meaning = str(row['meaning_ja']) if pd.notna(row['meaning_ja']) else ""
             context = str(row['context_cn']) if pd.notna(row['context_cn']) else ""
             source_title = str(row['source_title']) if pd.notna(row['source_title']) else ""
@@ -219,7 +270,7 @@ class VocabExtractor:
                 # Construct Properties
                 properties = {
                     "Word": {"title": [{"text": {"content": word}}]},
-                    "PinYin": {"rich_text": [{"text": {"content": pinyin}}]},
+                    "Pinyin": {"rich_text": [{"text": {"content": Pinyin}}]},
                     "Meaning_ja": {"rich_text": [{"text": {"content": meaning}}]},
                     "ContextCn": {"rich_text": [{"text": {"content": context}}]},
                     "Source Title": {"rich_text": [{"text": {"content": source_title}}]},
@@ -311,9 +362,9 @@ class VocabExtractor:
         df = pd.DataFrame(all_terms)
         
         # Simple aggregation: Group by word
-        # We will keep the first occurrence for meaning/pinyin, and count frequency
+        # We will keep the first occurrence for meaning/Pinyin, and count frequency
         agg_df = df.groupby('word').agg({
-            'pinyin': 'first',
+            'Pinyin': 'first',
             'meaning_ja': 'first',
             'word': 'count', # Frequency
             'source_title': lambda x: ", ".join(set(x)),
@@ -334,4 +385,4 @@ class VocabExtractor:
 if __name__ == "__main__":
     extractor = VocabExtractor()
     # Run with limit=1 for verification
-    extractor.run(limit=1)
+    extractor.run(limit=200)

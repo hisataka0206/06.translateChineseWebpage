@@ -1,3 +1,31 @@
+# Models Configuration
+models:
+  # Model to use for translation
+  translation: "gpt-4"
+
+  # Model for image analysis
+  vision: "gpt-4o"
+
+  # Model for vocabulary extraction (Free tier)
+  # gemini-1.5-flash was not found. Using gemini-2.0-flash-lite-001
+  vocab: "gemma-3-4b-it"
+  
+  # Fallback model for vocabulary extraction (Vertex AI)
+  vocab_fallback: "gemma-3-12b-it"
+  
+  # Model for X posts (defaults to translation model if not specified)
+  x_post: "gpt-4"
+
+# Google API Configuration
+google:
+  # Google API Key
+  # Set GOOGLE_API_KEY in .env
+  api_key: ""
+  
+  # Google Cloud Project ID (Required for Vertex AI fallback)
+  # Set GOOGLE_CLOUD_PROJECT in .env
+  project_id: ""
+
 # Notion API Configuration
 notion:
   # Notion API integration token
@@ -31,20 +59,11 @@ openai:
   # Use: import os; openai.api_key = os.getenv("OPENAI_API_KEY")
   api_key_env: "OPENAI_API_KEY"
 
-  # Model to use for translation
-  model: "gpt-4"
-
-  # Model for image analysis (updated from deprecated gpt-4-vision-preview)
-  vision_model: "gpt-4o"
-
   # Temperature for translation (0.0-1.0, lower = more deterministic)
   temperature: 0.3
 
   # Max tokens for response
   max_tokens: 2000
-  
-  # Model for vocabulary extraction (Free tier)
-  vocab_model: "gemini-flash-latest"
 
 # Vocabulary Extraction Configuration
 vocab_extraction:
@@ -54,7 +73,8 @@ vocab_extraction:
   # Output file path
   output_file: "robot_vocab.xlsx"
 
-# X API
+# X API Configuration
+x:
   # Set X_BEARER_TOKEN, X_CONSUMER_KEY, etc in .env
   bearer_token: ""
   # OAuth 1.0a Keys
@@ -68,10 +88,6 @@ vocab_extraction:
 
   # OAuth 2.0 client secret
   client_secret: ""
-
-# Google API Key
-# Set GOOGLE_API_KEY in .env
-GOOGLE_API_KEY: ""
 
 
 # Translation Settings
