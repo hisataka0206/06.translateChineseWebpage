@@ -53,6 +53,7 @@ data/input/*
 config/config.backup.yaml
 refers.md
 *.xlsx
+workflows.md
 
 .env
 .env.local

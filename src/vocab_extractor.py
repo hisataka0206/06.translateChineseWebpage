@@ -218,20 +218,17 @@ class VocabExtractor:
             try:
                 # Construct Properties
                 properties = {
-                    "Name": {"title": [{"text": {"content": word}}]},
-                    "Pinyin": {"rich_text": [{"text": {"content": pinyin}}]},
-                    "Meaning (JA)": {"rich_text": [{"text": {"content": meaning}}]},
-                    "Context": {"rich_text": [{"text": {"content": context}}]},
+                    "Word": {"title": [{"text": {"content": word}}]},
+                    "PinYin": {"rich_text": [{"text": {"content": pinyin}}]},
+                    "Meaning_ja": {"rich_text": [{"text": {"content": meaning}}]},
+                    "ContextCn": {"rich_text": [{"text": {"content": context}}]},
                     "Source Title": {"rich_text": [{"text": {"content": source_title}}]},
-                    # Assuming there is a Frequency number property. If not, this might fail or need to be text.
                     "Frequency": {"number": frequency} 
                 }
                 
-                # Check for Source URL property type. Assuming URL.
-                # If source_url is not empty and valid
-                if source_url and source_url.startswith("http"):
-                     properties["Source URL"] = {"url": source_url}
-
+                # Source URL is not in the database schema, so we skip it.
+                # If the user wants it, they need to add the property to Notion first.
+                
                 self.notion.pages.create(
                     parent={"database_id": db_id},
                     properties=properties
