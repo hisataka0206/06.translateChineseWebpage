@@ -53,6 +53,7 @@ data/input/*
 config/config.yaml
 config/config.backup.yaml
 refers.md
+*.xlsx
 
 # OS
 .DS_Store
