@@ -22,18 +22,19 @@ class XPublisher:
         # Load X credentials
         x_conf = config.get("openai", {})
         
+        
         # OAuth 2.0 (Old way)
-        self.client_id = x_conf.get("client_secret_id") 
-        self.client_secret = x_conf.get("client_secret")
+        self.client_id = os.getenv("X_CLIENT_SECRET_ID") or x_conf.get("client_secret_id")
+        self.client_secret = os.getenv("X_CLIENT_SECRET") or x_conf.get("client_secret")
         
         # OAuth 1.0a (New recommended way)
-        self.consumer_key = x_conf.get("consumer_key")
-        self.consumer_secret = x_conf.get("consumer_secret")
-        self.access_token = x_conf.get("access_token")
-        self.access_token_secret = x_conf.get("access_token_secret")
+        self.consumer_key = os.getenv("X_CONSUMER_KEY") or x_conf.get("consumer_key")
+        self.consumer_secret = os.getenv("X_CONSUMER_SECRET") or x_conf.get("consumer_secret")
+        self.access_token = os.getenv("X_ACCESS_TOKEN") or x_conf.get("access_token")
+        self.access_token_secret = os.getenv("X_ACCESS_TOKEN_SECRET") or x_conf.get("access_token_secret")
         
         # Load OpenAI for generation
-        api_key = x_conf.get("api_key") or os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv("OPENAI_API_KEY") or x_conf.get("api_key")
         self.openai_client = OpenAI(api_key=api_key)
         self.model = x_conf.get("model", "gpt-4") # Use same model as translation or gpt-4
         

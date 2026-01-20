@@ -50,11 +50,11 @@ data/output/*
 !data/output/.gitkeep
 data/input/*
 !data/input/.gitkeep
-config/config.yaml
 config/config.backup.yaml
 refers.md
 *.xlsx
 
-# OS
+.env
+.env.local
 .DS_Store
 Thumbs.db

@@ -118,11 +118,11 @@ def main():
         logger.info("=" * 60)
 
         # Get API keys
-        # Notion API key is directly in config
-        notion_api_key = config["notion"].get("token")
+        # Notion API key: prioritize env var, then config
+        notion_api_key = os.getenv("NOTION_TOKEN") or config["notion"].get("token")
 
-        # OpenAI API key: prioritize config, then env var
-        openai_api_key = config["openai"].get("api_key") or os.getenv(config["openai"]["api_key_env"])
+        # OpenAI API key: prioritize env var, then config
+        openai_api_key = os.getenv("OPENAI_API_KEY") or config["openai"].get("api_key")
 
         if not notion_api_key:
             logger.error("Missing Notion API token in config.yaml")

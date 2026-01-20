@@ -26,18 +26,14 @@ class VocabExtractor:
         load_dotenv()
         
         # Notion Setup
-        self.notion = Client(auth=self.config["notion"]["token"])
+        self.notion_token = os.getenv("NOTION_TOKEN") or self.config["notion"]["token"]
+        if not self.notion_token:
+             raise ValueError("NOTION_TOKEN not found in environment or config.")
+        self.notion = Client(auth=self.notion_token)
         self.target_parent_id = self.config["vocab_extraction"]["target_parent_id"]
         
         # Gemini Setup
-        # Try finding key in multiple places
-        api_key = self.config.get("GOOGLE_API_KEY") # Check top level
-        if not api_key and "openai" in self.config: # Check openai section (common place)
-             api_key = self.config["openai"].get("GOOGLE_API_KEY") 
-        if not api_key: # Check config root (user put it there in example)
-             api_key = self.config.get("GOOGLE_API_KEY")
-        if not api_key: # Check env
-             api_key = os.getenv("GOOGLE_API_KEY")
+        api_key = os.getenv("GOOGLE_API_KEY") or self.config.get("GOOGLE_API_KEY")
              
         if not api_key:
              # Fallback manual check for the specific indentation user might have used
@@ -340,5 +336,5 @@ class VocabExtractor:
 
 if __name__ == "__main__":
     extractor = VocabExtractor()
-    # Run with limit=2 for testing verification first, user can run full via command line later
-    extractor.run()
+    # Run with limit=1 for verification
+    extractor.run(limit=1)

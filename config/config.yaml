@@ -1,0 +1,93 @@
+# Notion API Configuration
+notion:
+  # Notion API integration token
+  # Set NOTION_TOKEN in .env
+  token: ""
+
+  # Source: Chinese pages to translate
+  source_page_ids:
+    - "2adcd55722618022834fc77653064573"
+
+  # Destination: Parent page for processed source pages (archive)
+  processed_source_parent_id: "2adcd55722618060b7ced689a41d00ab"
+
+  # Destination: Parent page for Japanese translations
+  destination_parent_id: "2edcd5572261800c8740ce450fbf61a6?v=2edcd557226180d7bbdd000c38e43dee"
+
+  # Chinese Dictionary
+  chinese_dictionary_id: "2eecd557226180f0b3c4e0a39a71a114?v=2eecd557226180ac8ee1000ce7cb863a"
+
+# OpenAI API Configuration
+openai:
+  # OpenAI API key (Consolidated from notionAPI.yaml)
+  # Set OPENAI_API_KEY in .env
+  api_key: ""
+  
+
+  # Set to true to skip translation and just move the source page to destination DB
+  skip_translation: false
+
+  # OpenAI API key will be read from environment variable: OPENAI_API_KEY
+  # Use: import os; openai.api_key = os.getenv("OPENAI_API_KEY")
+  api_key_env: "OPENAI_API_KEY"
+
+  # Model to use for translation
+  model: "gpt-4"
+
+  # Model for image analysis (updated from deprecated gpt-4-vision-preview)
+  vision_model: "gpt-4o"
+
+  # Temperature for translation (0.0-1.0, lower = more deterministic)
+  temperature: 0.3
+
+  # Max tokens for response
+  max_tokens: 2000
+  
+  # Model for vocabulary extraction (Free tier)
+  vocab_model: "gemini-flash-latest"
+
+# Vocabulary Extraction Configuration
+vocab_extraction:
+  # Source: Archive Page for all processed Chinese articles
+  target_parent_id: "2adcd55722618060b7ced689a41d00ab"
+  
+  # Output file path
+  output_file: "robot_vocab.xlsx"
+
+# X API
+  # Set X_BEARER_TOKEN, X_CONSUMER_KEY, etc in .env
+  bearer_token: ""
+  # OAuth 1.0a Keys
+  consumer_key: ""
+  consumer_secret: ""
+  access_token: ""
+  access_token_secret: ""
+
+  # OAuth 2.0 client secret id
+  client_secret_id: ""
+
+  # OAuth 2.0 client secret
+  client_secret: ""
+
+# Google API Key
+# Set GOOGLE_API_KEY in .env
+GOOGLE_API_KEY: ""
+
+
+# Translation Settings
+translation:
+  # Load custom prompt template from file
+  prompt_file: "config/translation_prompt.txt"
+
+  # Batch size for translating multiple pages
+  batch_size: 5
+
+  # Retry settings
+  max_retries: 3
+  retry_delay_seconds: 2
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_file: "logs/translation.log"
+  console_output: true
