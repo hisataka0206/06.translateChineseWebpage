@@ -35,4 +35,4 @@ jobs:
           X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
         run: |
           export PYTHONPATH=$PYTHONPATH:.
-          python src/publish_x_from_db.py
+          python src/publish_social.py
