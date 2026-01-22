@@ -18,10 +18,11 @@ logger = logging.getLogger(__name__)
 class ImageTextTranslator:
     """Extract and translate text from images"""
 
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, model: str = "gpt-4o"):
         """Initialize image translator with OpenAI API"""
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.client = OpenAI(api_key=self.api_key)
+        self.model = model
 
     def _download_and_encode_image(self, image_url: str) -> str:
         """
@@ -99,7 +100,7 @@ class ImageTextTranslator:
             # Step 1: Extract Chinese text from image
             logger.info("Step 1: Extracting Chinese text from image...")
             response1 = self.client.chat.completions.create(
-                model="gpt-4o",
+                model=self.model,
                 messages=[
                     {
                         "role": "user",
@@ -142,7 +143,7 @@ class ImageTextTranslator:
             # Step 2: Translate the extracted text
             logger.info("Step 2: Translating Chinese text to Japanese...")
             response2 = self.client.chat.completions.create(
-                model="gpt-4",
+                model=self.model,
                 messages=[
                     {
                         "role": "user",
