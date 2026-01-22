@@ -89,6 +89,12 @@ x:
   # OAuth 2.0 client secret
   client_secret: ""
 
+# LinkedIn Configuration
+linkedin:
+  # Set LINKEDIN_ACCESS_TOKEN and LINKEDIN_AUTHOR_URN in .env
+  access_token: ""
+  author_urn: "" # urn:li:person:ID or urn:li:organization:ID
+
 
 # Translation Settings
 translation:

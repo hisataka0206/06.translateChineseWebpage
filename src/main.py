@@ -261,13 +261,13 @@ def main():
 
         logger.info("\nTranslation service completed!")
                 
-        # --- Execute X Publisher Script ---
+        # --- Execute Social Publisher Script ---
         logger.info("\n" + "=" * 60)
-        logger.info("Starting X Publisher...")
+        logger.info("Starting Social Publisher (X & LinkedIn)...")
         logger.info("=" * 60)
         try:
-             import src.publish_x_from_db
-             src.publish_x_from_db.main()
+             from src.publish_social import run_social_publish
+             run_social_publish()
         except Exception as e:
              logger.error(f"Failed to run X Publisher: {e}")
     except KeyboardInterrupt:

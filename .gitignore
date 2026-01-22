@@ -54,6 +54,10 @@ config/config.backup.yaml
 refers.md
 *.xlsx
 workflows.md
+*jpeg
+*png
+*jpg
+
 
 .env
 .env.local

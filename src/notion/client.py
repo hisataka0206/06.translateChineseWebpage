@@ -273,3 +273,20 @@ class NotionClient:
             start_cursor = response.get("next_cursor")
             
         return results
+    
+    def update_database_schema(self, database_id: str, properties: dict) -> dict:
+        """
+        Update the schema of a database (add properties)
+        
+        Args:
+            database_id: ID of the database to update
+            properties: Dictionary of properties to add/update
+            
+        Returns:
+            Updated database object
+        """
+        logger.info(f"Updating database schema: {database_id}")
+        return self.client.databases.update(
+            database_id=database_id,
+            properties=properties
+        )
