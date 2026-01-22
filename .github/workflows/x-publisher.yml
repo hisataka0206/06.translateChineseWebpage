@@ -1,0 +1,38 @@
+name: X Publisher
+
+on:
+  schedule:
+    # 1時間ごとに実行 (例)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-publisher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run X Publisher
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          X_CONSUMER_KEY: ${{ secrets.X_CONSUMER_KEY }}
+          X_CONSUMER_SECRET: ${{ secrets.X_CONSUMER_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_TOKEN_SECRET: ${{ secrets.X_ACCESS_TOKEN_SECRET }}
+        run: |
+          export PYTHONPATH=$PYTHONPATH:.
+          python src/publish_x_from_db.py
