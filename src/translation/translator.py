@@ -10,16 +10,18 @@ logger = logging.getLogger(__name__)
 class TextTranslator:
     """Translator for Chinese to Japanese text"""
 
-    def __init__(self, api_key: Optional[str] = None, prompt_template: Optional[str] = None):
+    def __init__(self, api_key: Optional[str] = None, prompt_template: Optional[str] = None, model: str = "gpt-4o"):
         """
         Initialize translator with OpenAI API
 
         Args:
             api_key: OpenAI API key (optional, falls back to env var if not provided)
             prompt_template: Custom prompt template for translation
+            model: OpenAI model to use (default: gpt-4o)
         """
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.client = OpenAI(api_key=self.api_key)
+        self.model = model
 
         self.default_prompt = (
             "あなたは中国語から日本語への翻訳専門家です。"
@@ -64,7 +66,7 @@ class TextTranslator:
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4",
+                model=self.model,
                 messages=[
                     {"role": "system", "content": "あなたは優秀な翻訳者です。"},
                     {"role": "user", "content": prompt}
@@ -117,7 +119,7 @@ class TextTranslator:
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4",
+                model=self.model,
                 messages=[
                     {"role": "system", "content": "あなたは優秀な編集者です。"},
                     {"role": "user", "content": prompt}
