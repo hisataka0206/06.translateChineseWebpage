@@ -73,7 +73,12 @@ def run_social_publish():
         logger.info("No pages found with 'Go' status for X or LinkedIn.")
         return
         
-    logger.info(f"Found {len(pages)} pages to process.")
+    # Limit to max 4 pages as requested
+    if len(pages) > 4:
+        logger.info(f"Found {len(pages)} pages. Limiting to 4.")
+        pages = pages[:4]
+    else:
+        logger.info(f"Found {len(pages)} pages to process.")
     
     parser = NotionBlockParser()
     
