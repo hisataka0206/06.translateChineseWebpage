@@ -74,9 +74,9 @@ def run_social_publish():
         return
         
     # Limit to max 4 pages as requested
-    if len(pages) > 4:
-        logger.info(f"Found {len(pages)} pages. Limiting to 4.")
-        pages = pages[:4]
+    if len(pages) > 2:
+        logger.info(f"Found {len(pages)} pages. Limiting to 2.")
+        pages = pages[:2]
     else:
         logger.info(f"Found {len(pages)} pages to process.")
     
