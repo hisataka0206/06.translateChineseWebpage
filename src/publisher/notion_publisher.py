@@ -123,6 +123,42 @@ class NotionPublisher:
         
         # Get page blocks (content)
         source_blocks = self.notion.get_page_blocks(source_page_id)
+        
+        # Look for URL in the first few blocks
+        target_url = None
+        for block in source_blocks[:10]:
+            block_type = block.get("type")
+            if not block_type: continue
+            
+            if block_type in ["bookmark", "embed"]:
+                target_url = block.get(block_type, {}).get("url")
+                if target_url: break
+                
+            content = block.get(block_type, {})
+            rich_text = content.get("rich_text", [])
+            for rt in rich_text:
+                if rt.get("href"):
+                    target_url = rt.get("href")
+                    break
+            if target_url: break
+            
+            text_str = self.parser.extract_text_from_block(block)
+            import re
+            url_match = re.search(r'https?://[^\s]+', text_str)
+            if url_match:
+                target_url = url_match.group(0)
+                break
+                
+        elements = []
+        if target_url and not skip_translation:
+            logger.info(f"Target URL found: {target_url}. Attempting to scrape...")
+            from src.scraper.article_scraper import ArticleScraper
+            scraper = ArticleScraper()
+            elements = scraper.scrape_url(target_url)
+            if elements:
+                logger.info(f"Successfully scraped {len(elements)} elements from URL.")
+            else:
+                logger.warning("Scraping returned no elements. Will read Notion blocks instead (fallback).")
 
         # Handle Skip Translation Mode
         if skip_translation:
@@ -194,12 +230,19 @@ class NotionPublisher:
         # If title is missing or Untitled, generate it from content
         if not original_title or original_title.strip() == "Untitled":
             logger.info("Title is missing or Untitled. Generating title from content...")
-            # Extract first few text blocks for context
+            
             content_snippet = ""
-            for block in source_blocks[:10]:
-                text = self.parser.extract_text_from_block(block)
-                if text:
-                    content_snippet += text + "\n"
+            if elements:
+                # Use scraped elements for context
+                for el in elements[:15]:
+                    if "content" in el and el["type"] != "image":
+                        content_snippet += el["content"] + "\n"
+            else:
+                # Use Source blocks for context
+                for block in source_blocks[:10]:
+                    text = self.parser.extract_text_from_block(block)
+                    if text:
+                        content_snippet += text + "\n"
             
             generated_title = self.text_translator.generate_title(content_snippet)
             translated_title = generated_title
@@ -212,7 +255,30 @@ class NotionPublisher:
         logger.info(f"Translating page: {original_title} -> {translated_title}")
 
         # Process blocks and create translated version
-        translated_blocks = self._process_blocks(source_blocks)
+        if elements:
+            # We add a block pointing to original URL at the top
+            translated_blocks = [{
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {"content": "原文へのリンク: "},
+                            "annotations": {"bold": True}
+                        },
+                        {
+                            "type": "text",
+                            "text": {"content": target_url, "link": {"url": target_url}}
+                        }
+                    ]
+                }
+            }]
+            
+            # Plus the ones translated from scraper
+            translated_blocks.extend(self._process_scraped_elements(elements))
+        else:
+            translated_blocks = self._process_blocks(source_blocks)
 
         # Slice blocks into chunks of 100 (Notion API limit)
         LIMIT = 100
@@ -429,6 +495,45 @@ class NotionPublisher:
                 "color": "gray_background"
             }
         }
+
+    def _process_scraped_elements(self, elements: List[Dict[str, Any]]) -> List[Dict[Any, Any]]:
+        """
+        Translate and convert scraped elements into Notion block format
+        """
+        translated_blocks = []
+        for el in elements:
+            el_type = el.get("type")
+            if el_type == "image":
+                image_url = el.get("url")
+                if image_url:
+                    translated_blocks.append({
+                        "object": "block",
+                        "type": "image",
+                        "image": {
+                            "type": "external",
+                            "external": {"url": image_url}
+                        }
+                    })
+            elif el_type in ["paragraph", "heading_1", "heading_2", "heading_3", "bulleted_list_item"]:
+                text = el.get("content", "")
+                text = self._clean_text(text)
+                if not text:
+                    continue
+                
+                # Use TextTranslator to translate
+                translated_text = self.text_translator.translate(text)
+                
+                if el_type == "paragraph":
+                    translated_blocks.append(self.formatter.create_text_block(translated_text))
+                else:
+                    translated_blocks.append({
+                        "object": "block",
+                        "type": el_type,
+                        el_type: {
+                            "rich_text": [{"type": "text", "text": {"content": translated_text}}]
+                        }
+                    })
+        return translated_blocks
 
     def _process_blocks(self, blocks: List[Dict[Any, Any]]) -> List[Dict[Any, Any]]:
         """

@@ -153,12 +153,28 @@ def main():
         translation_model = config.get("models", {}).get("translation", "gpt-4")
         vision_model = config.get("models", {}).get("vision", "gpt-4o")
         
-        # Pass API key explicitly
-        text_translator = TextTranslator(
-            api_key=openai_api_key, 
-            prompt_template=custom_prompt,
-            model=translation_model
-        )
+        provider = config.get("provider", {}).get("translation", "openai")
+        
+        if provider == "ollama":
+            from src.translation.ollama_translator import OllamaTranslator
+            ollama_config = config.get("ollama", {})
+            base_url = ollama_config.get("base_url", "http://localhost:11434/v1/")
+            ollama_model = ollama_config.get("model", "qwen3:8b")
+            
+            logger.info(f"Using OllamaTranslator (model: {ollama_model}, base_url: {base_url})")
+            text_translator = OllamaTranslator(
+                base_url=base_url,
+                model=ollama_model,
+                prompt_template=custom_prompt
+            )
+        else:
+            logger.info("Using TextTranslator (OpenAI)")
+            # Pass API key explicitly
+            text_translator = TextTranslator(
+                api_key=openai_api_key, 
+                prompt_template=custom_prompt,
+                model=translation_model
+            )
         image_translator = ImageTextTranslator(
             api_key=openai_api_key,
             model=vision_model

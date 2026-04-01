@@ -16,6 +16,16 @@ models:
   # Model for X posts (defaults to translation model if not specified)
   x_post: "gpt-4"
 
+# LLM Provider Configuration (openai or ollama)
+# If using ollama, it will use the translation model from ollama section below
+provider:
+  translation: "ollama"
+
+# Ollama API Configuration
+ollama:
+  base_url: "http://localhost:11434/v1/"
+  model: "qwen3:8b"
+
 # Google API Configuration
 google:
   # Google API Key
