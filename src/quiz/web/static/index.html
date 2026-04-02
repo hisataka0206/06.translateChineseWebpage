@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chinese Vocab Quiz</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="background-orbs">
@@ -22,27 +22,27 @@
             <p class="subtitle">ロボット工学 中国語単語テスト</p>
             
             <div class="status-box">
-                <p id="local-status">状態を確認中...</p>
+                <p id="local-status">辞書データを読み込み中...</p>
             </div>
             
-            <div class="action-buttons">
-                <button id="btn-download" class="btn primary">
-                    <span class="icon">⬇️</span> Notionから最新データをDL
-                </button>
-                <button id="btn-local" class="btn secondary" disabled>
-                    <span class="icon">🎮</span> ローカルデータで遊ぶ
-                </button>
+            <div id="setup-panel" class="hidden">
+                <h3 style="margin-bottom: 12px; font-size: 1.1rem; text-align: center;">出題数を選択してください</h3>
+                <div class="choices-grid" style="grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button class="choice-btn count-btn active-count" data-count="10">10問</button>
+                    <button class="choice-btn count-btn" data-count="30">30問</button>
+                    <button class="choice-btn count-btn" data-count="50">50問</button>
+                    <button class="choice-btn count-btn" data-count="100">100問</button>
+                </div>
+                
+                <div class="action-buttons margin-top">
+                    <button id="btn-start" class="btn primary full-width">
+                        <span class="icon">🚀</span> テストを開始する
+                    </button>
+                </div>
             </div>
         </div>
 
-        <!-- Screen 2: Loading Screen -->
-        <div id="loading-screen" class="screen">
-            <div class="spinner"></div>
-            <h2 id="loading-text">Downloading from Notion...</h2>
-            <p>これには数秒〜数十秒かかる場合があります。</p>
-        </div>
-
-        <!-- Screen 3: Quiz Screen -->
+        <!-- Screen 2: Quiz Screen -->
         <div id="quiz-screen" class="screen">
             <div class="quiz-header">
                 <span id="question-counter">Question 1/10</span>
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <!-- Screen 4: Results Screen -->
+        <!-- Screen 3: Results Screen -->
         <div id="results-screen" class="screen">
             <h1>Quiz Complete!</h1>
             <div class="score-circle">
@@ -84,6 +84,6 @@
 
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -110,12 +110,24 @@ python -m src.vocab_extractor
 
 ### 単語テスト機能（Webアプリ）の実行
 Notionに蓄積された単語を使って、意味を当てる4択形式のクイズをブラウザ上で実行できます。
-以下のコマンドでサーバーを起動後、表示されるURL（`http://127.0.0.1:8000`）にブラウザでアクセスしてください。
+本プロジェクトは**GitHub Pages**を利用して、完全な静的サイトとして公開できるようになっています。
+
+#### GitHub Pagesでの公開手順
+1. このコードをGitHubリポジトリにプッシュします。
+2. GitHubリポジトリの **Settings > Secrets and variables > Actions** にて、新しいリポジトリシークレット `NOTION_TOKEN` にNotionAPIのトークンを登録します。
+3. リポジトリの **Settings > Pages > Build and deployment** にて、Sourceを `GitHub Actions` に設定します。
+4. 設定後、自動的にGitHub ActionsがNotionから最新の単語データを取得し、GitHub Pagesにデプロイします（毎日午前0時にも自動更新されます）。
+
+#### ローカルでの動作確認
+ローカルPCで単語テストを試す場合は、以下のコマンドを実行してブラウザで `http://localhost:8000` にアクセスしてください。
 
 ```bash
-python3 -m uvicorn src.quiz.web.app:app --reload
+# Notionから最新辞書をダウンロード
+python3 -m src.quiz.vocab_manager
+
+# ローカルサーバーを起動
+cd src/quiz/web/static && python3 -m http.server 8000
 ```
-※事前に `python3 -m pip install -r requirements.txt` で `fastapi` と `uvicorn` をインストールしてください。
 ### 既存の翻訳機能について
 本プロジェクトには、Notionページを全文翻訳して「done」プレフィックスを付与する機能も含まれています。
 詳細は [USAGE.md](./USAGE.md) を参照してください。

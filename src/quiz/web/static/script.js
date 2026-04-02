@@ -1,34 +1,51 @@
 const startScreen = document.getElementById('start-screen');
-const loadingScreen = document.getElementById('loading-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const resultsScreen = document.getElementById('results-screen');
 
-const btnLocal = document.getElementById('btn-local');
-const btnDownload = document.getElementById('btn-download');
+const btnStart = document.getElementById('btn-start');
 const btnNext = document.getElementById('btn-next');
 const btnRestart = document.getElementById('btn-restart');
 const btnHome = document.getElementById('btn-home');
+const countBtns = document.querySelectorAll('.count-btn');
+const statusText = document.getElementById('local-status');
+const setupPanel = document.getElementById('setup-panel');
 
+let fullVocabList = [];
 let questions = [];
 let currentQuestionIndex = 0;
 let score = 0;
+let selectedCount = 10;
+
+// Utility: Array Shuffle (Fisher-Yates)
+function shuffle(array) {
+    let currentIndex = array.length;
+    while (currentIndex != 0) {
+        let randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
 
 // Init
-async function checkStatus() {
+async function loadVocab() {
     try {
-        const res = await fetch('/api/status');
-        const data = await res.json();
-        const statusText = document.getElementById('local-status');
+        statusText.innerText = "辞書データを読み込み中...";
+        // Fetch static json file
+        const res = await fetch('local_vocab.json');
+        if (!res.ok) throw new Error("JSON Fetch Failed");
         
-        if (data.has_local_data) {
-            statusText.innerText = `ローカルデータ: ${data.word_count}件の単語が利用可能です。`;
-            btnLocal.disabled = false;
+        fullVocabList = await res.json();
+        
+        if (fullVocabList.length >= 4) {
+            statusText.innerText = `読み込み完了: ${fullVocabList.length} 件の単語が登録されています。`;
+            setupPanel.classList.remove('hidden');
         } else {
-            statusText.innerText = `ローカルデータが見つかりません。Notionからダウンロードしてください。`;
-            btnLocal.disabled = true;
+            statusText.innerText = `エラー: 辞書データが不足しています（最低4単語必要です）。`;
         }
     } catch (e) {
-        document.getElementById('local-status').innerText = "ステータス取得エラー";
+        console.error("Vocabulary Load Error:", e);
+        statusText.innerText = "辞書データの読み込みに失敗しました。GitHub Actionsでの初回デプロイをお待ちください。";
     }
 }
 
@@ -37,49 +54,57 @@ function showScreen(screen) {
     screen.classList.add('active');
 }
 
-// Event Listeners
-btnLocal.addEventListener('click', async () => {
-    await startQuiz();
+// Handle question count selection
+countBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        countBtns.forEach(b => b.classList.remove('active-count'));
+        e.target.classList.add('active-count');
+        selectedCount = parseInt(e.target.getAttribute('data-count'));
+    });
 });
 
-btnDownload.addEventListener('click', async () => {
-    showScreen(loadingScreen);
-    try {
-        const res = await fetch('/api/download', { method: 'POST' });
-        const data = await res.json();
-        if (data.success) {
-            await startQuiz();
+// Start Quiz logic (generate questions client-side)
+btnStart.addEventListener('click', () => {
+    const qCount = Math.min(selectedCount, fullVocabList.length);
+    if (qCount < 4) return alert("データが足りません");
+    
+    // Pick random target words
+    const shuffledVocab = shuffle([...fullVocabList]);
+    const targetWords = shuffledVocab.slice(0, qCount);
+    
+    questions = targetWords.map(target => {
+        const correctMeaning = target.meaning;
+        
+        // Find distractors
+        let uniqueMeanings = [...new Set(fullVocabList.filter(v => v.meaning !== correctMeaning).map(v => v.meaning))];
+        let distractors = [];
+        
+        if (uniqueMeanings.length >= 3) {
+            distractors = shuffle(uniqueMeanings).slice(0, 3);
         } else {
-            alert('Download failed.');
-            checkStatus();
-            showScreen(startScreen);
+            // Fallback
+            let flatList = fullVocabList.filter(v => v.meaning !== correctMeaning).map(v => v.meaning);
+            distractors = shuffle(flatList).slice(0, 3);
         }
-    } catch (e) {
-        alert('API Error during download');
-        checkStatus();
-        showScreen(startScreen);
-    }
+        
+        let choices = [...distractors, correctMeaning];
+        choices = shuffle(choices);
+        
+        return {
+            word: target.word,
+            choices: choices,
+            correct_idx: choices.indexOf(correctMeaning),
+            pinyin: target.pinyin,
+            context_cn: target.context_cn,
+            meaning: correctMeaning
+        };
+    });
+    
+    currentQuestionIndex = 0;
+    score = 0;
+    renderQuestion();
+    showScreen(quizScreen);
 });
-
-async function startQuiz() {
-    try {
-        const res = await fetch('/api/questions?num=10');
-        const data = await res.json();
-        if (data.questions) {
-            questions = data.questions;
-            currentQuestionIndex = 0;
-            score = 0;
-            renderQuestion();
-            showScreen(quizScreen);
-        } else {
-            alert('Failed to load questions.');
-            showScreen(startScreen);
-        }
-    } catch (e) {
-        alert('API Error while loading questions');
-        showScreen(startScreen);
-    }
-}
 
 function renderQuestion() {
     const q = questions[currentQuestionIndex];
@@ -156,11 +181,12 @@ function showResults() {
     showScreen(resultsScreen);
 }
 
-btnRestart.addEventListener('click', startQuiz);
+btnRestart.addEventListener('click', () => {
+    showScreen(startScreen);
+});
 btnHome.addEventListener('click', () => {
-    checkStatus();
     showScreen(startScreen);
 });
 
 // Initialize on load
-checkStatus();
+loadVocab();

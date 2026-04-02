@@ -289,6 +289,17 @@ h2 {
     cursor: default;
 }
 
+.count-btn {
+    text-align: center;
+    font-weight: 600;
+}
+
+.count-btn.active-count {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
 /* Feedback panel */
 .feedback-panel {
     margin-top: 24px;

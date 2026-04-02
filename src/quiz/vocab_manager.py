@@ -95,3 +95,15 @@ class VocabManager:
             return False
         data = self.load_local_data()
         return len(data) >= 4 # Quiz needs at least 4 items
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Download Notion Vocabulary to JSON for Static Site")
+    parser.add_argument("--outdir", default="src/quiz/web/static", help="Directory to save local_vocab.json")
+    args = parser.parse_args()
+    
+    # Try to load env/config, fallback to just env if in GitHub actions
+    manager = VocabManager(data_dir=args.outdir)
+    print(f"Downloading from Notion to {manager.local_json_path} ...")
+    data = manager.download_from_notion()
+    print(f"Success! {len(data)} words downloaded and saved.")
