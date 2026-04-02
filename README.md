@@ -108,13 +108,14 @@ pip install -r requirements.txt
 python -m src.vocab_extractor
 ```
 
-### 単語テストの実行
-Notionに蓄積された単語を使って、意味を当てる4択形式のターミナルクイズを実行できます。
-```bash
-python -m src.quiz.vocab_quiz
-```
-（環境によっては `python` の代わりに `python3` を使用してください）
+### 単語テスト機能（Webアプリ）の実行
+Notionに蓄積された単語を使って、意味を当てる4択形式のクイズをブラウザ上で実行できます。
+以下のコマンドでサーバーを起動後、表示されるURL（`http://127.0.0.1:8000`）にブラウザでアクセスしてください。
 
+```bash
+python3 -m uvicorn src.quiz.web.app:app --reload
+```
+※事前に `python3 -m pip install -r requirements.txt` で `fastapi` と `uvicorn` をインストールしてください。
 ### 既存の翻訳機能について
 本プロジェクトには、Notionページを全文翻訳して「done」プレフィックスを付与する機能も含まれています。
 詳細は [USAGE.md](./USAGE.md) を参照してください。

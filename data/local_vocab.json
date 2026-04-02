@@ -1,0 +1,2366 @@
+[
+  {
+    "word": "霍尔传感器",
+    "meaning": "HALL SENSOR",
+    "pinyin": "Huò'ěr chuán gǎn qì",
+    "context_cn": "用于检测磁场信号的传感器。"
+  },
+  {
+    "word": "轮式机器人",
+    "meaning": "タイヤ式ヒューマノイド",
+    "pinyin": "lún shì jī qì rén",
+    "context_cn": "The G1-D robot is a wheeled robot."
+  },
+  {
+    "word": "新能源",
+    "meaning": "新エネルギー",
+    "pinyin": "xīn neng(2) yuan(2)",
+    "context_cn": "新能源汽车智能化的发展，使得滚珠丝杠、行星滚柱丝杠作为精密传动部件在汽车领域开始逐步应用。"
+  },
+  {
+    "word": "软件",
+    "meaning": "ソフトウェア",
+    "pinyin": "ruǎn jiàn",
+    "context_cn": "在半导体领域，达明通过提供客制化的AMR控制软件，并结合高精度手臂与可靠视觉，设计出包含专用夹具与品质防呆流程的整体解决方案"
+  },
+  {
+    "word": "感知-决策-执行",
+    "meaning": "認識 - 意思決定 - 実行",
+    "pinyin": "gǎn zhi(1) - juécè - zhí xíng",
+    "context_cn": "复合机器人中游本体制造领域正处在快速演进阶段，其核心特征是从单一功能的“执行工具”向“感知-决策-执行”一体化的智能体跃迁"
+  },
+  {
+    "word": "芯片",
+    "meaning": "チップ、マイクロチップ",
+    "pinyin": "xīn piàn",
+    "context_cn": "上游需突破芯片、传感器等核心技术提升国产化率"
+  },
+  {
+    "word": "供应链",
+    "meaning": "サプライチェーン",
+    "pinyin": "gong(1) ying(4) lian(4)",
+    "context_cn": "灵巧手量产及供应链缺失仍是核心瓶颈。"
+  },
+  {
+    "word": "算力",
+    "meaning": "computing power",
+    "pinyin": "suàn lì",
+    "context_cn": "100TOPS 算力 (100TOPS computing power)."
+  },
+  {
+    "word": "末端执行器",
+    "meaning": "エンドエフェクタ",
+    "pinyin": "mò duān zhí xíng qì",
+    "context_cn": "提供高适配高可靠的末端执⾏器解决方案"
+  },
+  {
+    "word": "系统集成",
+    "meaning": "システムインテグレーター",
+    "pinyin": "xìtǒng jíhé",
+    "context_cn": "中游：本体制造与系统集成。"
+  },
+  {
+    "word": "龙头公司",
+    "meaning": "リーダー企業",
+    "pinyin": "lóngtóu gōngsī",
+    "context_cn": "Leading companies"
+  },
+  {
+    "word": "1234战略",
+    "meaning": "1234 Strategy",
+    "pinyin": "yī èr sān sì zhànlüè",
+    "context_cn": "擎天租董事长姜青松提出了清晰的“1234战略”："
+  },
+  {
+    "word": "复合",
+    "meaning": "複合",
+    "pinyin": "fù hé",
+    "context_cn": "复合机器人产业链是一个涵盖核心技术研发、硬件制造、系统集成及场景应用的多层次协同体系"
+  },
+  {
+    "word": "3D 曲面显示屏",
+    "meaning": "3D curved display screen",
+    "pinyin": "3D qūmiàn xiǎnshì píng",
+    "context_cn": "头部配备 3D 曲面显示屏"
+  },
+  {
+    "word": "检测框",
+    "meaning": "バウンディングボックス",
+    "pinyin": "jiǎncè",
+    "context_cn": "可以以图像、文本、检测框作为输入"
+  },
+  {
+    "word": "控制器",
+    "meaning": "コントローラー",
+    "pinyin": "Kòng zhì qi(4)",
+    "context_cn": "团队在直线关节上实现了传感器与控制器的深度集成。"
+  },
+  {
+    "word": "摄像头 (Camera)",
+    "meaning": "Camera",
+    "pinyin": "she(4) xiang(4) tou(2)",
+    "context_cn": "Used for visual perception and situational awareness."
+  },
+  {
+    "word": "机器人",
+    "meaning": "人型ロボット",
+    "pinyin": "jī qì rén",
+    "context_cn": "以达明机器人为例，其作为全球领先的AI协作机器人及工业自动化解决方案提供商，自2018年量产首款具备广泛AGV/AMR兼容性的TM12系列机器人手臂起，便奠定了移动复合机器人发展的硬件基础"
+  },
+  {
+    "word": "驱动",
+    "meaning": "駆動",
+    "pinyin": "qu(1) dong(4)",
+    "context_cn": "双肌腱全向驱动系统"
+  },
+  {
+    "word": "触觉传感器 (Tactile sensors)",
+    "meaning": "触覚センサー",
+    "pinyin": "chùqiè chuán gǎn qi",
+    "context_cn": "精密触觉传感和高适应性抓取能力"
+  },
+  {
+    "word": "系统",
+    "meaning": "システム",
+    "pinyin": "xì tǒng",
+    "context_cn": "驱动系统是使机器人发出动作的机构。"
+  },
+  {
+    "word": "齿轮",
+    "meaning": "歯車 (tachi)",
+    "pinyin": "chǐlún",
+    "context_cn": "从蒸汽机的齿轮到灵巧手的仿生关节。"
+  },
+  {
+    "word": "面式传感器",
+    "meaning": "面式センサー",
+    "pinyin": "miànshì chuán gǎn qì",
+    "context_cn": "电感编码器是“面”式传感器，通过空间和时间差分效应，对强磁、强电磁干扰免疫。"
+  },
+  {
+    "word": "半导体",
+    "meaning": "半導体",
+    "pinyin": "Bàn dǎo tǐ",
+    "context_cn": "德州仪器的核心业务领域。"
+  },
+  {
+    "word": "零部件",
+    "meaning": "スペアパーツ、パーツ",
+    "pinyin": "ling(2) bu(4) jian(4)",
+    "context_cn": "上游包括零部件和基础软件。"
+  },
+  {
+    "word": "驱动器",
+    "meaning": "Driver",
+    "pinyin": "qū dòng qì",
+    "context_cn": "The text defines a driver as a functional module."
+  },
+  {
+    "word": "协作",
+    "meaning": "協調、コーポレート",
+    "pinyin": "xié zuò",
+    "context_cn": "协作机器人作为复合机器人的核心执行单元，不同场景复合机器人对协作机械臂的需求呈现明显的行业差异化特征"
+  },
+  {
+    "word": "交互",
+    "meaning": "相互作用",
+    "pinyin": "jiāo hù",
+    "context_cn": "提升感知实时性与交互可靠性"
+  },
+  {
+    "word": "检测框标注",
+    "meaning": "バウンディングボックスのラベル付け",
+    "pinyin": "jiǎncè bázhào",
+    "context_cn": "；通过中文开放域语言表达进行检测框标注"
+  },
+  {
+    "word": "3D Reconstruction",
+    "meaning": "3D再構成",
+    "pinyin": "3D Ying-suan",
+    "context_cn": "GCA 不依赖海量数据微调，而是通过构建形式化任务约束..."
+  },
+  {
+    "word": "操作",
+    "meaning": "操作、オペレーション",
+    "pinyin": "cāo zuò",
+    "context_cn": "Mobile and operation are always a whole."
+  },
+  {
+    "word": "整机",
+    "meaning": "コンプリートビルトユニット、完成品",
+    "pinyin": "zhěngjī",
+    "context_cn": "G1-D has 17 and 19 degrees of freedom (excluding end effectors)."
+  },
+  {
+    "word": "锂电池",
+    "meaning": "リチウム電池",
+    "pinyin": "lǐ dian(4) chi(2)",
+    "context_cn": "主流为锂电池"
+  },
+  {
+    "word": "抓取",
+    "meaning": "掴み取る",
+    "pinyin": "Zhuā qǔ",
+    "context_cn": "自主完成识别指令、抓取杯具、精准装填、递出品等全流程操作。"
+  },
+  {
+    "word": "高精度",
+    "meaning": "高精度",
+    "pinyin": "gāo jīn gdù",
+    "context_cn": "高精度、高承载、高扭矩"
+  },
+  {
+    "word": "集成",
+    "meaning": "統合",
+    "pinyin": "jí chéng",
+    "context_cn": "这些集成式关节通常是专有设计，价格昂贵。"
+  },
+  {
+    "word": "2D-RoPE",
+    "meaning": "2D Rotary Positional Embedding",
+    "pinyin": "2D-RoPE",
+    "context_cn": "引入2D-RoPE"
+  },
+  {
+    "word": "伺服",
+    "meaning": "サーボ",
+    "pinyin": "sìfú",
+    "context_cn": "The '伺服系统' (servo system) is crucial for precision control."
+  },
+  {
+    "word": "5G",
+    "meaning": "5G",
+    "pinyin": "5G",
+    "context_cn": "技术融合深化:产业链的协同创新将更加紧密，特别是与A1、5G等新技术的融合致力于打造统一的“机器人大脑”"
+  },
+  {
+    "word": "模拟芯片 (Mónlüó qìpiàn)",
+    "meaning": "アナログチップ",
+    "pinyin": "Mónlüó xìn piàn",
+    "context_cn": "TI的模拟芯片，如电源管理、传感器信号处理。"
+  },
+  {
+    "word": "1D-RoPE",
+    "meaning": "1D Rotary Positional Embedding",
+    "pinyin": "1D-RoPE",
+    "context_cn": "用 1D 位置编码（如 RoPE-1D）处理"
+  },
+  {
+    "word": "履带式",
+    "meaning": "キャタピラ式",
+    "pinyin": "lv(3) dai(4) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "航天",
+    "meaning": "宇宙",
+    "pinyin": "hang(2) tian(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "中游",
+    "meaning": "中流",
+    "pinyin": "zhong(1) you(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "化学工业",
+    "meaning": "化学工業",
+    "pinyin": "hua(4) xue(2) gong(1) ye(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "键",
+    "meaning": "鍵、キー",
+    "pinyin": "jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "供应",
+    "meaning": "提供",
+    "pinyin": "gong(1) ying(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "军工",
+    "meaning": "軍事工業の略",
+    "pinyin": "jun(1) gong(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "减速器",
+    "meaning": "減速機",
+    "pinyin": "jiǎn su(4) qì",
+    "context_cn": ""
+  },
+  {
+    "word": "充电装置",
+    "meaning": "充電装置",
+    "pinyin": "chong(1) dian(4) zhuang(1) zhi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "家电",
+    "meaning": "家電",
+    "pinyin": "jia(1) dian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "主要",
+    "meaning": "主な",
+    "pinyin": "zhu(3) yao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "3C电子",
+    "meaning": "コンピューター、コミュニケーション、コンシューマーエレクトロニクスの総称",
+    "pinyin": "3C dian(4) zi(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "检测",
+    "meaning": "ディテクト",
+    "pinyin": "jiǎn cè",
+    "context_cn": ""
+  },
+  {
+    "word": "烟草",
+    "meaning": "煙草",
+    "pinyin": "yan(1) cao(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "核心",
+    "meaning": "コア",
+    "pinyin": "he(2) xin(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "終端应用",
+    "meaning": "エンドユーザー",
+    "pinyin": "zhong(1) duan(1) ying(4) yong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "电机",
+    "meaning": "電機",
+    "pinyin": "dian(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "商",
+    "meaning": "会社",
+    "pinyin": "shang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "感知",
+    "meaning": "認識、感知、パーセプション",
+    "pinyin": "gǎn zhī",
+    "context_cn": ""
+  },
+  {
+    "word": "传感器",
+    "meaning": "センサー",
+    "pinyin": "chuán gǎn qì",
+    "context_cn": ""
+  },
+  {
+    "word": "橡胶",
+    "meaning": "ゴム",
+    "pinyin": "xiang(4) jiao(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "航空",
+    "meaning": "航空",
+    "pinyin": "hang(2) kong(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "特种",
+    "meaning": "特殊",
+    "pinyin": "te(4) zhong(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "汽车",
+    "meaning": "自動車",
+    "pinyin": "qì chē",
+    "context_cn": ""
+  },
+  {
+    "word": "调度",
+    "meaning": "調度、ディスパッチ",
+    "pinyin": "tiao(4) du(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "轮足式",
+    "meaning": "タイヤ足式",
+    "pinyin": "lún zu(2) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "应用",
+    "meaning": "適用",
+    "pinyin": "ying(4) yong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "下游",
+    "meaning": "下流",
+    "pinyin": "xia(4) you(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "军事工业",
+    "meaning": "軍事工業",
+    "pinyin": "jun(1) shi(4) gong(1) ye(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "塑料",
+    "meaning": "プラスチック",
+    "pinyin": "su(4) liao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "玻璃",
+    "meaning": "ガラス",
+    "pinyin": "bo(1) li(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "化工",
+    "meaning": "化学工業の略",
+    "pinyin": "hua(4) gong(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "上游",
+    "meaning": "上流",
+    "pinyin": "shang(4) you(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "电池",
+    "meaning": "電池",
+    "pinyin": "dian(4) chi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "运维・运行维护",
+    "meaning": "オペレーション・メンテナンス",
+    "pinyin": "yun(4) wei(2)・yun(4) xing(2) wei(2) hu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "滞销",
+    "meaning": "デッドストック",
+    "pinyin": "zhi(4) xiao(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "构建",
+    "meaning": "構築",
+    "pinyin": "gou(4) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "拣选",
+    "meaning": "セレクト、選ぶ",
+    "pinyin": "jian(3) xuan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "适应",
+    "meaning": "適応",
+    "pinyin": "shi(4)  ying(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "医药",
+    "meaning": "医薬",
+    "pinyin": "yi(1) yao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "降低",
+    "meaning": "減らす",
+    "pinyin": "jiang(4) di(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "风险",
+    "meaning": "リスク",
+    "pinyin": "feng(1) xian(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "污染",
+    "meaning": "汚染",
+    "pinyin": "wu(1) ran(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "订单",
+    "meaning": "注文",
+    "pinyin": "ding(4) dan(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "质量",
+    "meaning": "質量",
+    "pinyin": "zhi(4) liang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "物料",
+    "meaning": "マテリアル",
+    "pinyin": "wu(4) liao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "电商",
+    "meaning": "EC",
+    "pinyin": "dian(4) shang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "避免",
+    "meaning": "避ける",
+    "pinyin": "bi(4) mian(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "提升",
+    "meaning": "上げる、増やす",
+    "pinyin": "ti(2) sheng(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "存取",
+    "meaning": "出し入れ、アクセス",
+    "pinyin": "cun(2) qu(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "离散制造环节",
+    "meaning": "離散製造プロセス",
+    "pinyin": "li(2) san(4) zhi(4) zao(4) huan(2) jie(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "弹夹",
+    "meaning": "マガジン",
+    "pinyin": "dan(4) jia(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "冷凝",
+    "meaning": "凝固、コンデンス",
+    "pinyin": "leng(3) ning(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "晶圆",
+    "meaning": "ウエハー",
+    "pinyin": "jing(1) yuan(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "核电站",
+    "meaning": "原子力発電所",
+    "pinyin": "he(2) dian(4) zhan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "处理",
+    "meaning": "処理",
+    "pinyin": "chu(3) li(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "价值",
+    "meaning": "価値",
+    "pinyin": "jia(4) zhi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "机加工",
+    "meaning": "機械加工",
+    "pinyin": "ji(1) jia(1) gong(1) ",
+    "context_cn": ""
+  },
+  {
+    "word": "智能工厂",
+    "meaning": "スマートファクトリー",
+    "pinyin": "zhi(4) neng(2) gong(1) chang(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "电路板",
+    "meaning": "電子基板",
+    "pinyin": "dian(4) lu(4) ban(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "上料・下料",
+    "meaning": "ローディング、アンローディング",
+    "pinyin": "shang(4) liao(4)・xia(4) liao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "环节",
+    "meaning": "プロセス",
+    "pinyin": "huan(2) jie(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "设备",
+    "meaning": "設備",
+    "pinyin": "she(4) bei(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "仪表",
+    "meaning": "外観",
+    "pinyin": "yi(2) biao(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "间断",
+    "meaning": "間断、断続、ディスコネクト",
+    "pinyin": "jian(4) duan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "打通",
+    "meaning": "統合",
+    "pinyin": "da(3) tong(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "货到人",
+    "meaning": "棚搬送型",
+    "pinyin": "huo(4) dao(4) ren(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "转运",
+    "meaning": "乗り継ぎ搬送",
+    "pinyin": "zhuan(3) yun(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "分拣",
+    "meaning": "分類",
+    "pinyin": "fen(1) jian(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "模组",
+    "meaning": "モジュール",
+    "pinyin": "mo(2) zu(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "盒",
+    "meaning": "ふた、箱",
+    "pinyin": "he(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "柔性化生产",
+    "meaning": "フレキシブル生産",
+    "pinyin": "rou(2) xing(4) hua(4) sheng(1) chan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "劳动",
+    "meaning": "労働",
+    "pinyin": "lao(2) dong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "主厂房",
+    "meaning": "メインファクトリービルディング",
+    "pinyin": "zhu(3) chang(3) fang(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "精准",
+    "meaning": "精確な",
+    "pinyin": "jing(1) zhun(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "无尘环境",
+    "meaning": "クリーンルーム",
+    "pinyin": "wu(2) chen(2) huan(2) jing(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "范围",
+    "meaning": "範囲",
+    "pinyin": "fan(4) wei(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "损耗",
+    "meaning": "損耗",
+    "pinyin": "sun(3) hao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "零售",
+    "meaning": "小売、リテール",
+    "pinyin": "ling(2) shou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "效率",
+    "meaning": "効率",
+    "pinyin": "xiao(4) lv(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "覆盖",
+    "meaning": "覆う",
+    "pinyin": "fu(4) gai(4) ",
+    "context_cn": ""
+  },
+  {
+    "word": "搬运",
+    "meaning": "搬送",
+    "pinyin": "ban(1) yun(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "衔接",
+    "meaning": "ジョイント、結合",
+    "pinyin": "xian(2) jie(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "主板",
+    "meaning": "メインボード",
+    "pinyin": "zhu(3) ban(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "封测・封装测试",
+    "meaning": "密封テスト",
+    "pinyin": "feng(1)  ce(4)  / feng(1) zhuang(1) feng(1) ce(4) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "冷链",
+    "meaning": "コールドチェーン",
+    "pinyin": "leng(3) lian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "行业",
+    "meaning": "業界",
+    "pinyin": "hang(2) ye(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "维护",
+    "meaning": "守る",
+    "pinyin": "wei(2) hu4)",
+    "context_cn": ""
+  },
+  {
+    "word": "手机",
+    "meaning": "スマホ",
+    "pinyin": "shou(3) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "准确",
+    "meaning": "正確な",
+    "pinyin": "zhun(3) que(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "追溯",
+    "meaning": "トレーサビリティ",
+    "pinyin": "zhui(1) su(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "监测",
+    "meaning": "監視する、モニターする",
+    "pinyin": "jian(1) ce(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "响应",
+    "meaning": "反応",
+    "pinyin": "xiang(3) ying(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "开关室",
+    "meaning": "開閉室",
+    "pinyin": "kai(1) guan(1) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "应用场景",
+    "meaning": "ユースケース",
+    "pinyin": "ying(4) yong(4) chang(3) jing(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "电厂",
+    "meaning": "発電所",
+    "pinyin": "dian(4) chang(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "库存",
+    "meaning": "在庫",
+    "pinyin": "ku(4) cun(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "仓储",
+    "meaning": "倉庫",
+    "pinyin": "cang(1) chu(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "痛点",
+    "meaning": "ペインポイント",
+    "pinyin": "tong(4) dian(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "损坏",
+    "meaning": "損壊",
+    "pinyin": "sun(3) huai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "提高",
+    "meaning": "高める",
+    "pinyin": "ti(2) gao(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "培训",
+    "meaning": "訓練",
+    "pinyin": "pei(2) xun(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "模块",
+    "meaning": "モジュール、モデルブロック",
+    "pinyin": "mo(2) kuai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "融合",
+    "meaning": "フォーミング",
+    "pinyin": "rong(2) he(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "快速",
+    "meaning": "素早く",
+    "pinyin": "kuai(4) su(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "支撑",
+    "meaning": "サポートする",
+    "pinyin": "zhi(1) cheng",
+    "context_cn": ""
+  },
+  {
+    "word": "比例",
+    "meaning": "比率、プロポーション",
+    "pinyin": "bi(3) li(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "以及",
+    "meaning": "as well as 〜のような",
+    "pinyin": "yi(3) ji(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "诊断",
+    "meaning": "診断",
+    "pinyin": "zhen(3) duan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "识别",
+    "meaning": "識別",
+    "pinyin": "shi(2) bie(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "成本",
+    "meaning": "資本コスト",
+    "pinyin": "cheng(2) ben(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "将",
+    "meaning": "なりつつある、be going to",
+    "pinyin": "jiang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "企业",
+    "meaning": "企業",
+    "pinyin": "qi(3) ye(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "领先",
+    "meaning": "リードする",
+    "pinyin": "ling(3) xian(1) ",
+    "context_cn": ""
+  },
+  {
+    "word": "固态",
+    "meaning": "固定",
+    "pinyin": "gu(4) tai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "趋势",
+    "meaning": "趨勢、潮流、トレンド",
+    "pinyin": "qu(1) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "复杂",
+    "meaning": "複雑",
+    "pinyin": "fu(4) za(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "多模态",
+    "meaning": "マルチモーダル",
+    "pinyin": "duo(1) mo(2) tai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "增多",
+    "meaning": "増える",
+    "pinyin": "zeng(1) duo(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "图示",
+    "meaning": "図示",
+    "pinyin": "tu(2) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "调试",
+    "meaning": "テストラン",
+    "pinyin": "tiao(2) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "流程",
+    "meaning": "フロー",
+    "pinyin": "liu(2) cheng(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "通过",
+    "meaning": "〜を通じて",
+    "pinyin": "tong(1) guo(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "夹具",
+    "meaning": "クランプ",
+    "pinyin": "jia(1) ju(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "专用",
+    "meaning": "専用",
+    "pinyin": "zhuan(1) yong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "平台",
+    "meaning": "プラットフォーム",
+    "pinyin": "ping(2) tai(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "积极",
+    "meaning": "積極的に",
+    "pinyin": "ji(1) ji(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "不再",
+    "meaning": "もはや、no more",
+    "pinyin": "bu(4) zai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "无线",
+    "meaning": "ワイヤレス",
+    "pinyin": "wu(2) xian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "采用",
+    "meaning": "採用",
+    "pinyin": "cai(3) yong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "智能决策引擎",
+    "meaning": "インテリジェンスポリシー（意思決定）エンジン",
+    "pinyin": "zhi(4) neng(2) jue(2) ce(4) yin(3) qing(2)",
+    "context_cn": "智能决策引擎作为现代企业数字化转型的核心工具，其核心功能直接影响企业的运营效率和决策质量。"
+  },
+  {
+    "word": "组合",
+    "meaning": "組み合わせる、アセンブル",
+    "pinyin": "zu(3) he(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "取放",
+    "meaning": "取ったり離したり",
+    "pinyin": "qu(3) fang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "恢复",
+    "meaning": "回復",
+    "pinyin": "hui(1) fu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "激光雷达",
+    "meaning": "Lidar",
+    "pinyin": "ji(1) guang(1) lei(2) da(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "实际落地",
+    "meaning": "地に足ついた、実践的な",
+    "pinyin": "shi(2) ji(4) luo(4) di(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "积木",
+    "meaning": "積み木",
+    "pinyin": "ji(1) mu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "避障",
+    "meaning": "障害物を避ける",
+    "pinyin": "bi(4) zhang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "辅助",
+    "meaning": "補助、アシスト",
+    "pinyin": "fu(3) zhu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "光伏",
+    "meaning": "光電池の",
+    "pinyin": "guang(1) fu(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "分钟",
+    "meaning": "分",
+    "pinyin": "fen(1) zhong(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "技术",
+    "meaning": "技術、テクノロジー",
+    "pinyin": "ji(4) shu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "迭代",
+    "meaning": "繰り返し処理する、イテレートする",
+    "pinyin": "die(2) dai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "影响",
+    "meaning": "影響",
+    "pinyin": "ying(3) xiang(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "产线",
+    "meaning": "生産ライン",
+    "pinyin": "chan(3) xian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "调研・调查研究",
+    "meaning": "調査研究",
+    "pinyin": "diao(4) yan(2)・diao(4) cha(2) yan(2) jiu(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "特点",
+    "meaning": "特徴",
+    "pinyin": "te(4) dian(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "为主",
+    "meaning": "優先的に",
+    "pinyin": "wei(2) zhu(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "内涵",
+    "meaning": "meaningful content,　要点、示唆",
+    "pinyin": "nei(4) han(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "自研",
+    "meaning": "自己研鑽する、自社開発する",
+    "pinyin": "zi(4) yan(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "发展",
+    "meaning": "発展",
+    "pinyin": "fa(1) zhan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "演进",
+    "meaning": "進化",
+    "pinyin": "yan(3) jin(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "中枢",
+    "meaning": "中枢、センター",
+    "pinyin": "zhong(1) shu(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "服务",
+    "meaning": "サービス",
+    "pinyin": "fu(2) wu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "产品",
+    "meaning": "製品、プロダクト",
+    "pinyin": "chan(3) pin(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "导航",
+    "meaning": "ナビゲート",
+    "pinyin": "dao(3) hang(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "售后服务",
+    "meaning": "アフターサービス",
+    "pinyin": "shou(4) hou(4) fu(2) wu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "聚焦",
+    "meaning": "フォーカスする",
+    "pinyin": "ju(4) jiao(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "导向",
+    "meaning": "〜に向かって",
+    "pinyin": "dao(3) xiang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "越来越",
+    "meaning": "どんどん、ますます",
+    "pinyin": "yue(4) lai(2) yue(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "创新",
+    "meaning": "イノベートする",
+    "pinyin": "chuang(4) xin(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "执行",
+    "meaning": "実行、執行",
+    "pinyin": "zhi(2) xing(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "壁垒",
+    "meaning": "moat、参入障壁",
+    "pinyin": "bi(4) lei(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "因素",
+    "meaning": "要素",
+    "pinyin": "yin(1) su(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "成",
+    "meaning": "なる",
+    "pinyin": "cheng(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "协调",
+    "meaning": "コーディネート、協調",
+    "pinyin": "xie(2) tiao(2)",
+    "context_cn": "部署名：指揮調整部\n　　職務内容：複雑な問題を調整するための合同会議システムを確立し、実施する。グリッド管理、市民サービスホットライン、インターネットなどのチャネルを通じて、繰り返し発生する問題、頻繁に発生する問題、長期間未解決の問題の処理を監督し、原因を調査し、関連部門や地方自治体と連携して処理する。さまざまな地域から提起された「内部告発および報告」問題の処理を追跡、指示、調整、分析する。大興区グリッド総合情報プラットフォーム、「街道・郷鎮内部告発・部門報告」システム、および「街道・路地長」システムの構築、管理、アップグレード、運用、保守を担当する。"
+  },
+  {
+    "word": "拼接",
+    "meaning": "結合する",
+    "pinyin": "pin(1) jie(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "底盘",
+    "meaning": "シャーシ",
+    "pinyin": "di(3) pan(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "机械臂",
+    "meaning": "ロボティックアーム",
+    "pinyin": "ji(1) xie(4) bi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "工序",
+    "meaning": "工程プロセス",
+    "pinyin": "gong(1) xu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "基础",
+    "meaning": "基礎",
+    "pinyin": "ji(1) chu3)",
+    "context_cn": ""
+  },
+  {
+    "word": "引擎",
+    "meaning": "エンジン",
+    "pinyin": "yin(3) qing(2)",
+    "context_cn": "空间智能引擎开放平台(Spatial Intelligence Engin Open Platform)将学习并融合最新热点前沿技术，联合产业合作伙伴共同研发康养、教育、医疗、养生及智慧城市等的空间智能行业大模型，这些模型可以从图像和其他模态中理解和推理3D世界。"
+  },
+  {
+    "word": "异常",
+    "meaning": "異常",
+    "pinyin": "yi(4) chang(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "关键",
+    "meaning": "キー、ポイント",
+    "pinyin": "guan(1) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "物理",
+    "meaning": "物理",
+    "pinyin": "wu(4) li(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "而是",
+    "meaning": "〜よりも",
+    "pinyin": "er(2) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "青睐",
+    "meaning": "好意的な",
+    "pinyin": "qing(1) lai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "指挥",
+    "meaning": "指示、命令",
+    "pinyin": "zhi(3) hui(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "竞争",
+    "meaning": "競争",
+    "pinyin": "jing(4) zheng(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "跃迁",
+    "meaning": "トランジション、移行",
+    "pinyin": "yue(4) qian(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "实验室",
+    "meaning": "実験室",
+    "pinyin": "shi(2) yan(4) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "移动",
+    "meaning": "移動、モバイル",
+    "pinyin": "yi(2) dong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "维度",
+    "meaning": "ディメンジョン、次元",
+    "pinyin": "wei(2) du(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "应对",
+    "meaning": "面と面で応じる、相対する",
+    "pinyin": "ying(4) dui(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "叠加",
+    "meaning": "積み重なる",
+    "pinyin": "die(2) jia(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "工具",
+    "meaning": "ツール、工具",
+    "pinyin": "gong(1) ju(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "各类",
+    "meaning": "各種",
+    "pinyin": "ge(4) lei(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "仅",
+    "meaning": "〜だけ",
+    "pinyin": "jin(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "智能引擎",
+    "meaning": "インテリジェンスエンジン",
+    "pinyin": "zhi(4) neng(2) yin(3) qing(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "不断",
+    "meaning": "絶え間なく",
+    "pinyin": "bu(4) duan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "升级",
+    "meaning": "アップグレード",
+    "pinyin": "sheng(1) ji(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "样本",
+    "meaning": "サンプル",
+    "pinyin": "yang(4) ben(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "任务",
+    "meaning": "任務、アサインメント、タスク",
+    "pinyin": "ren(4) wu",
+    "context_cn": ""
+  },
+  {
+    "word": "用于",
+    "meaning": "〜に使う",
+    "pinyin": "yong(4) yu(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "扭矩",
+    "meaning": "トルク",
+    "pinyin": "niu(3) ju(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "储能",
+    "meaning": "エネルギーを蓄える、蓄電",
+    "pinyin": "chu(3) neng(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "批量",
+    "meaning": "バッチ、ロット",
+    "pinyin": "pi(1) liang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "功能",
+    "meaning": "機能、ファンクション",
+    "pinyin": "gong(1) neng(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "简单",
+    "meaning": "簡単",
+    "pinyin": "jian(3) dan(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "具体",
+    "meaning": "具体的な",
+    "pinyin": "ju(4) ti(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "闭环",
+    "meaning": "閉ループ",
+    "pinyin": "bi(4) huan(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "一些",
+    "meaning": "some",
+    "pinyin": "yi(1) xie(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "导入",
+    "meaning": "導入",
+    "pinyin": "dao(3) ru(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "逐年",
+    "meaning": "毎年",
+    "pinyin": "zhu(2) nian(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "磁条",
+    "meaning": "クレジットカードや銀行カードの裏面にある黒い帯状の磁性体",
+    "pinyin": "ci(2) tiao(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "设计",
+    "meaning": "デザイン、設計",
+    "pinyin": "she(4) ji(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "焊接",
+    "meaning": "溶接",
+    "pinyin": "han(4) jie(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "弹性",
+    "meaning": "弾性",
+    "pinyin": "tan(2) xing(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "轴数",
+    "meaning": "軸の数",
+    "pinyin": "zhou(2) shu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "防爆",
+    "meaning": "防爆",
+    "pinyin": "fang(2) bao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "深度",
+    "meaning": "深度",
+    "pinyin": "shen(1) du(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "摆线",
+    "meaning": "サイクロイド",
+    "pinyin": "bai(3) xian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "二维码",
+    "meaning": "２次元バーコード",
+    "pinyin": "er(4) wei(2) ma(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "需高",
+    "meaning": "需要が高い",
+    "pinyin": "xu(1) gao(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "品牌",
+    "meaning": "ブランド",
+    "pinyin": "pin(3) pai(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "维护服务",
+    "meaning": "メンテナンスサービス",
+    "pinyin": "wei(2) hu(4) fu(2) wu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "灵活性",
+    "meaning": "柔軟性",
+    "pinyin": "ling(2) huo(2) xing(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "车间",
+    "meaning": "作業場、ワークショップ",
+    "pinyin": "che(1) jian(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "常见",
+    "meaning": "よく見られる",
+    "pinyin": "chang(2) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "伴随",
+    "meaning": "伴う",
+    "pinyin": "ban(4) sui(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "显著",
+    "meaning": "顕著な、明らかに",
+    "pinyin": "xian(3) zhu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "总生产成本",
+    "meaning": "総生産コスト",
+    "pinyin": "zong(3) sheng(1) chan(3) cheng(2) ben(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "研发・研究与发展",
+    "meaning": "研究開発、R&D",
+    "pinyin": "yan(2) fa(1)・yan(2) jiu(1) yu(3) fa(1) zhan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "差异",
+    "meaning": "差異",
+    "pinyin": "cha(1) yi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "安装调试",
+    "meaning": "据付・インストール・調整",
+    "pinyin": "an(1) zhuang(1) tiao(2) shi(4) ",
+    "context_cn": ""
+  },
+  {
+    "word": "价格",
+    "meaning": "価格",
+    "pinyin": "jia(4) ge(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "负载",
+    "meaning": "ロード、積載",
+    "pinyin": "fu(4) zai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "编码器",
+    "meaning": "エンコーダー",
+    "pinyin": "bian(1) ma(3) qi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "相机",
+    "meaning": "カメラ",
+    "pinyin": "xiang(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "优势",
+    "meaning": "アドバンテージ",
+    "pinyin": "you(1) shi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "碰撞",
+    "meaning": "衝撃",
+    "pinyin": "peng(4) zhuang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "选择",
+    "meaning": "選択",
+    "pinyin": "xiuan(3) ze(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "差异化特征",
+    "meaning": "差別化要因",
+    "pinyin": "cha(1) yi(4) hua(4) te(4) zheng(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "非标准",
+    "meaning": "非標準、特注",
+    "pinyin": "fei(1) biao(1) zhun(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "定制化",
+    "meaning": "カスタマイズ、特注、オーダーメード",
+    "pinyin": "ding(4) zhi(4) hua(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "拧紧枪",
+    "meaning": "ナットランナー",
+    "pinyin": "ning(3) jin(3) qiang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "立库・立体仓库",
+    "meaning": "立体倉庫",
+    "pinyin": "li(4) ku(4)・li(4) ti(3) cang(1) ku(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "侧重",
+    "meaning": "重きを置く",
+    "pinyin": "ce(4) zhong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "拧紧",
+    "meaning": "締め付け",
+    "pinyin": "ning(2) jin(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "优化",
+    "meaning": "最適化する",
+    "pinyin": "you(1) hua(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "接收",
+    "meaning": "おさまる、accept、受け入れる",
+    "pinyin": "jie(1) shou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "稳定",
+    "meaning": "安定",
+    "pinyin": "wen(3) ding(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "迁移",
+    "meaning": "転用する",
+    "pinyin": "qian(1) yi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "甚至",
+    "meaning": "even、〜すらも、so far as to",
+    "pinyin": "shen(2) zhi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "绝缘击穿",
+    "meaning": "絶縁破壊",
+    "pinyin": "jue(2) yuan(2) ji(1) chuan(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "严苛",
+    "meaning": "シビアな",
+    "pinyin": "yan(2) ke(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "力控",
+    "meaning": "力制御",
+    "pinyin": "li(4) kong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "极致",
+    "meaning": "極致",
+    "pinyin": "ji(2) zhi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "发送状态报告",
+    "meaning": "ステータスレポート",
+    "pinyin": "fa(1) song(4) zhuang(4) tai(4) bao(4) gao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "结构",
+    "meaning": "構造",
+    "pinyin": "jie(2) gou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "编程",
+    "meaning": "プログラム",
+    "pinyin": "bian(1) cheng(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "元件",
+    "meaning": "セル、コンポーネント、エレメント",
+    "pinyin": "yuan(2) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "反馈",
+    "meaning": "フィードバック",
+    "pinyin": "fan(3) kui(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "专注",
+    "meaning": "関心を注ぐ",
+    "pinyin": "zhuan(1) zhu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "广泛",
+    "meaning": "幅広い",
+    "pinyin": "guang(3) fan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "前馈",
+    "meaning": "フィードフォワード",
+    "pinyin": "qian(2) kui(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "考量",
+    "meaning": "consider, 考慮する",
+    "pinyin": "kao(3) liang(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "缩短",
+    "meaning": "短縮する",
+    "pinyin": "suo(1) duan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "无尘",
+    "meaning": "無塵、",
+    "pinyin": "wu(2) chen(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "螺栓",
+    "meaning": "スクリューボルト",
+    "pinyin": "luo(2) shuan(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "角色",
+    "meaning": "role　役割",
+    "pinyin": "jue(2) se(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "难度",
+    "meaning": "難易度",
+    "pinyin": "nan(2) du(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "挑战",
+    "meaning": "挑戦",
+    "pinyin": "tiao(3) zhan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "工艺",
+    "meaning": "工芸",
+    "pinyin": "gong(1) yi(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "抛光",
+    "meaning": "研磨",
+    "pinyin": "pao(1) guang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "工件",
+    "meaning": "部品、ワークピース",
+    "pinyin": "gong(1) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "涉及",
+    "meaning": "involve 含む",
+    "pinyin": "she(4) ji(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "能够",
+    "meaning": "〜ができる、可能である、be able to",
+    "pinyin": "neng(2) gou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "远程",
+    "meaning": "遠隔",
+    "pinyin": "yun(4) cheng(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "则",
+    "meaning": "follow, したがって",
+    "pinyin": "ze(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "偶遇",
+    "meaning": "ぶつかる、meet by accident",
+    "pinyin": "ou(3) yu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "发动机",
+    "meaning": "エンジン、モーター",
+    "pinyin": "fa(1) dong(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "换线",
+    "meaning": "生産ライン切り替え",
+    "pinyin": "huan(4) xian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "拖动示教",
+    "meaning": "ダイレクトティーチング",
+    "pinyin": "tuo(1) dong(4) shi(4) jiao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "步骤",
+    "meaning": "ステップ",
+    "pinyin": "bu(4) zhou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "可靠性",
+    "meaning": "信頼性",
+    "pinyin": "ke(3) kao(4) xing(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "震动",
+    "meaning": "振動",
+    "pinyin": "zhen(4) dong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "路径规划",
+    "meaning": "ルート規制",
+    "pinyin": "lu(4) jing(4) gui(1) hua(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "摊薄",
+    "meaning": "希釈化",
+    "pinyin": "tan(1) bao(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "套件",
+    "meaning": "キット",
+    "pinyin": "tao(4) jian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "协议栈",
+    "meaning": "プロトコル",
+    "pinyin": "xie(2) yi(4) zhan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "英特尔",
+    "meaning": "インテル",
+    "pinyin": "ying(1) te(4) er(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "依赖",
+    "meaning": "依存する、depend on",
+    "pinyin": "yi(1) lai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "英特尔酷睿",
+    "meaning": "インテルコア",
+    "pinyin": "ying(1) te(4) er(3)  ku(4) rui(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "接口",
+    "meaning": "インターフェース",
+    "pinyin": "jie(1) kou(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "基于",
+    "meaning": "because of",
+    "pinyin": "ji(1) yu(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "高达",
+    "meaning": "up to",
+    "pinyin": "gao(1) da(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "实时",
+    "meaning": "リアルタイム",
+    "pinyin": "shi(2) shi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "后期",
+    "meaning": "後期",
+    "pinyin": "hou(4) qi(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "异构",
+    "meaning": "異性体",
+    "pinyin": "yi(4) gou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "门槛",
+    "meaning": "スレッシュホールド",
+    "pinyin": "men(2) kan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "负责",
+    "meaning": "責任を負う",
+    "pinyin": "fu(4) ze(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "卡",
+    "meaning": "カード",
+    "pinyin": "ka(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "算法模型",
+    "meaning": "アルゴリズムモデル、学習モデル",
+    "pinyin": "suan(4) fa(3) mo(2) xing(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "价格",
+    "meaning": "価格",
+    "pinyin": "jia(4) ge(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "外购",
+    "meaning": "外部調達する",
+    "pinyin": "wai(4) gou(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "插槽",
+    "meaning": "スロット",
+    "pinyin": "cha(1) cao(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "转移",
+    "meaning": "シフトする、トランスファーする",
+    "pinyin": "zhuan(3) yi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "文档",
+    "meaning": "ドキュメント",
+    "pinyin": "wen(2) dang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "内核",
+    "meaning": "カーネル",
+    "pinyin": "nei(4) he(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "供应商",
+    "meaning": "サプライヤー",
+    "pinyin": "gong(1) ying(4) shang(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "主站",
+    "meaning": "マスター",
+    "pinyin": "zhu(3) zhan(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "下一代",
+    "meaning": "次世代",
+    "pinyin": "xia(4) yi(1) dai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "前期",
+    "meaning": "前期、初期",
+    "pinyin": "qian(2) qi(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "团队",
+    "meaning": "チーム",
+    "pinyin": "tuan(2) dui(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "随心所欲",
+    "meaning": "思いのままに",
+    "pinyin": "sui(2) xin(1) suo(3) yu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "示例",
+    "meaning": "サンプル",
+    "pinyin": "shi(4) li(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "转接板",
+    "meaning": "変換基板",
+    "pinyin": "zhuan(3) jie(1) ban(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "高端",
+    "meaning": "ハイエンド",
+    "pinyin": "gao(1) duan(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "深度学习",
+    "meaning": "ディープラーニング",
+    "pinyin": "shen(1) du(4) xue(2) xi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "同步调度",
+    "meaning": "同期スケジューリング",
+    "pinyin": "tong(2) bu(4) diao(4) du(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "无刷直流电机",
+    "meaning": "ブラシレスDCモーター",
+    "pinyin": "wu(2) shua(4) zhi(2) liu(2) dian(4) ji(1) ",
+    "context_cn": ""
+  },
+  {
+    "word": "锥齿轮减速机",
+    "meaning": "カサ歯車",
+    "pinyin": "zhui(1) chi(3) lun(2) jian(3) su(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "尺寸",
+    "meaning": "サイズ",
+    "pinyin": "chi(3) cun(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "并发",
+    "meaning": "to happen simultaneously",
+    "pinyin": "bing(4) fa(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "蜗轮蜗杆",
+    "meaning": "ウォームギア",
+    "pinyin": "wo(1) lun(2) wo(1) gan(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "谐波减速机",
+    "meaning": "ハーモニックドライブ",
+    "pinyin": "xie(2) bo(1) jian(3) su(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "伺服电机",
+    "meaning": "サーボモーター",
+    "pinyin": "si(4) fu(2) dian(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "步进电机",
+    "meaning": "ステップモーター",
+    "pinyin": "bu(4) jin(4) dian(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "模仿学习",
+    "meaning": "模倣学習",
+    "pinyin": "mo(2) fang(3) xue(2) xi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "整机",
+    "meaning": "Complete Built Unit",
+    "pinyin": "zheng(3) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "全局",
+    "meaning": "overall situation",
+    "pinyin": "quan(2) ju(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "华成工控",
+    "meaning": "Huacheng Industrial Control\n（企業名）",
+    "pinyin": "hua(2) cheng(2) gong(1) kong(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "规划",
+    "meaning": "プロジェクト",
+    "pinyin": "gui(1) hua(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "信息",
+    "meaning": "情報",
+    "pinyin": "xin(4) xi(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "节约",
+    "meaning": "節約する",
+    "pinyin": "jie(2) yue(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "功耗",
+    "meaning": "電力損失",
+    "pinyin": "gong(1) hao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "里程计",
+    "meaning": "スピードモーター",
+    "pinyin": "li(3) cheng(2) ji(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "容错",
+    "meaning": "耐故障性",
+    "pinyin": "rong(2) cuo(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "有刷直流电机",
+    "meaning": "ブラシ付きDCモーター",
+    "pinyin": "you(3) shua(4) zhi(2) liu(2) dian(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "代码",
+    "meaning": "コード",
+    "pinyin": "dai(4) ma(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "力矩",
+    "meaning": "モーメント",
+    "pinyin": "li(4) ju(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "短时准",
+    "meaning": "短時間で精確",
+    "pinyin": "duan(3) shi(2) zhun(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "衔接",
+    "meaning": "つなぎめ",
+    "pinyin": "xian(2) jie(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "悬崖",
+    "meaning": "ガケの",
+    "pinyin": "xuan(2) ya(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "行星齿轮减速机",
+    "meaning": "プラネタリーギア",
+    "pinyin": "xing(2) xing(1) chi(3) lun(2) jian(3) su(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "流畅",
+    "meaning": "流暢に",
+    "pinyin": "liu(2) chang(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "框架",
+    "meaning": "枠組み、フレーム",
+    "pinyin": "kuang(4) jia(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "适配",
+    "meaning": "適合させる",
+    "pinyin": "shi(4) pei(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "圆柱齿轮减速机",
+    "meaning": "平歯車",
+    "pinyin": "yuan(2) zhu(4) chi(3) lun(2) jian(3) su(4) ji(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "防线",
+    "meaning": "防衛ライン",
+    "pinyin": "fang(2) xian(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "姿态",
+    "meaning": "姿勢",
+    "pinyin": "zi(1) tai(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "端到端",
+    "meaning": "End 2 End",
+    "pinyin": "duan(1) dao(4) duan(1) ",
+    "context_cn": ""
+  },
+  {
+    "word": "漂移",
+    "meaning": "ドリフト",
+    "pinyin": "piao(1) yi(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "建图",
+    "meaning": "地図を作る",
+    "pinyin": "jian(4) tu(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "打磨",
+    "meaning": "研磨",
+    "pinyin": "da(3) mo(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "头部",
+    "meaning": "頭部",
+    "pinyin": "tou(2) bu(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "一套",
+    "meaning": "１セット",
+    "pinyin": "yi(1) tao(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "双主站冗余",
+    "meaning": "デュアルマスター冗長",
+    "pinyin": "shuang(1) zhu(3) zhan(4) rong(3) yu(2)",
+    "context_cn": ""
+  },
+  {
+    "word": "估计",
+    "meaning": "予測",
+    "pinyin": "gu(1) ji(4)",
+    "context_cn": ""
+  },
+  {
+    "word": "传统",
+    "meaning": "伝統",
+    "pinyin": "chuan(2) tong(3)",
+    "context_cn": ""
+  },
+  {
+    "word": "周期",
+    "meaning": "周期",
+    "pinyin": "zhou(1) qi(1)",
+    "context_cn": ""
+  },
+  {
+    "word": "毫秒",
+    "meaning": "m sec",
+    "pinyin": "hao(2) miao(3)",
+    "context_cn": ""
+  }
+]

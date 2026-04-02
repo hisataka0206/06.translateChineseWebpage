@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Vocab Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="background-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <div class="container glass-panel" id="main-container">
+        
+        <!-- Screen 1: Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>Vocab Quiz</h1>
+            <p class="subtitle">ロボット工学 中国語単語テスト</p>
+            
+            <div class="status-box">
+                <p id="local-status">状態を確認中...</p>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="btn-download" class="btn primary">
+                    <span class="icon">⬇️</span> Notionから最新データをDL
+                </button>
+                <button id="btn-local" class="btn secondary" disabled>
+                    <span class="icon">🎮</span> ローカルデータで遊ぶ
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 2: Loading Screen -->
+        <div id="loading-screen" class="screen">
+            <div class="spinner"></div>
+            <h2 id="loading-text">Downloading from Notion...</h2>
+            <p>これには数秒〜数十秒かかる場合があります。</p>
+        </div>
+
+        <!-- Screen 3: Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="quiz-header">
+                <span id="question-counter">Question 1/10</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+            
+            <div class="word-card">
+                <h2 id="target-word">--</h2>
+            </div>
+            
+            <div class="choices-grid" id="choices-container">
+                <!-- Choices will be injected here -->
+            </div>
+            
+            <div id="feedback-panel" class="feedback-panel hidden">
+                <h3 id="feedback-title">Correct!</h3>
+                <div class="feedback-details">
+                    <p><strong>正解:</strong> <span id="feedback-meaning"></span></p>
+                    <p><strong>ピンイン:</strong> <span id="feedback-pinyin"></span></p>
+                    <p><strong>例文:</strong> <span id="feedback-context"></span></p>
+                </div>
+                <button id="btn-next" class="btn primary full-width">Next Question</button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Results Screen -->
+        <div id="results-screen" class="screen">
+            <h1>Quiz Complete!</h1>
+            <div class="score-circle">
+                <span id="final-score">0</span><span class="total">/10</span>
+            </div>
+            <p id="result-message" class="result-message">よくできました！</p>
+            
+            <div class="action-buttons margin-top">
+                <button id="btn-restart" class="btn primary">もう一度遊ぶ</button>
+                <button id="btn-home" class="btn secondary">ホームへ戻る</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
