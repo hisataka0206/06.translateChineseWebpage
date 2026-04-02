@@ -108,6 +108,13 @@ pip install -r requirements.txt
 python -m src.vocab_extractor
 ```
 
+### 単語テストの実行
+Notionに蓄積された単語を使って、意味を当てる4択形式のターミナルクイズを実行できます。
+```bash
+python -m src.quiz.vocab_quiz
+```
+（環境によっては `python` の代わりに `python3` を使用してください）
+
 ### 既存の翻訳機能について
 本プロジェクトには、Notionページを全文翻訳して「done」プレフィックスを付与する機能も含まれています。
 詳細は [USAGE.md](./USAGE.md) を参照してください。
