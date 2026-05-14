@@ -10,6 +10,8 @@ from notion_client import Client
 from google import genai
 from dotenv import load_dotenv
 
+from src.utils.notion_text import make_text_rich_text
+
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
@@ -267,14 +269,17 @@ class VocabExtractor:
             frequency = int(row['frequency']) if pd.notna(row['frequency']) else 1
             
             try:
-                # Construct Properties
+                # Construct Properties.
+                # Notion の DB rich_text プロパティも 1 セグメント 2000 文字制限が
+                # 適用されるため、make_text_rich_text でチャンク化しておく。
+                # title (Word) も同様だが通常短文なのでチャンクは make_text_rich_text 任せ。
                 properties = {
-                    "Word": {"title": [{"text": {"content": word}}]},
-                    "Pinyin": {"rich_text": [{"text": {"content": Pinyin}}]},
-                    "Meaning_ja": {"rich_text": [{"text": {"content": meaning}}]},
-                    "ContextCn": {"rich_text": [{"text": {"content": context}}]},
-                    "Source Title": {"rich_text": [{"text": {"content": source_title}}]},
-                    "Frequency": {"number": frequency} 
+                    "Word": {"title": make_text_rich_text(word)},
+                    "Pinyin": {"rich_text": make_text_rich_text(Pinyin)},
+                    "Meaning_ja": {"rich_text": make_text_rich_text(meaning)},
+                    "ContextCn": {"rich_text": make_text_rich_text(context)},
+                    "Source Title": {"rich_text": make_text_rich_text(source_title)},
+                    "Frequency": {"number": frequency}
                 }
                 
                 # Source URL is not in the database schema, so we skip it.

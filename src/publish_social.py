@@ -12,6 +12,7 @@ from src.notion.client import NotionClient
 from src.publisher.x_publisher import XPublisher
 from src.publisher.linkedin_publisher import LinkedInPublisher
 from src.notion.parser import NotionBlockParser
+from src.utils.notion_text import make_text_rich_text
 
 # Logging setup
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -112,7 +113,8 @@ def run_social_publish():
                 if not post_text:
                     post_text = x_publisher.generate_post_text(title, title)
                     # Queue update to save generated text
-                    props_to_update["X comment"] = {"rich_text": [{"text": {"content": post_text}}]}
+                    # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
+                    props_to_update["X comment"] = {"rich_text": make_text_rich_text(post_text or "")}
                 
                 if x_publisher.post(title, page_url, override_text=post_text):
                     props_to_update["X post"] = {"select": {"name": "Done"}}
@@ -137,7 +139,8 @@ def run_social_publish():
                 if not post_text:
                     post_text = linkedin_publisher.generate_post_text(title, title)
                     # Queue update to save generated text
-                    props_to_update["LinkedIn comment"] = {"rich_text": [{"text": {"content": post_text}}]}
+                    # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
+                    props_to_update["LinkedIn comment"] = {"rich_text": make_text_rich_text(post_text or "")}
                 
                 if linkedin_publisher.post(title, page_url, override_text=post_text):
                     props_to_update["LinkedIn post"] = {"select": {"name": "Done"}}

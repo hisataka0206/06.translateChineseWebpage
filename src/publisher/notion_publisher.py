@@ -15,6 +15,12 @@ from src.translation.image_translator import ImageTextTranslator
 from src.formatting.toggle_formatter import ToggleFormatter
 from src.notion.parser import NotionBlockParser
 from src.publisher.x_publisher import XPublisher # Imported for text generation only
+from src.utils.notion_text import (
+    SAFE_CHUNK_LIMIT,
+    make_text_rich_text,
+    sanitize_blocks,
+    sanitize_rich_text_array,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -256,29 +262,30 @@ class NotionPublisher:
 
         # Process blocks and create translated version
         if elements:
-            # We add a block pointing to original URL at the top
+            # We add a block pointing to original URL at the top.
+            # label / URL は通常 2000 文字を超えないが、make_text_rich_text を通して
+            # 防御的に組み立てる。
+            header_rich_text: List[Dict[str, Any]] = []
+            header_rich_text.extend(
+                make_text_rich_text("原文へのリンク: ", annotations={"bold": True})
+            )
+            header_rich_text.extend(
+                make_text_rich_text(target_url or "", link=target_url or None)
+            )
             translated_blocks = [{
                 "object": "block",
                 "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "type": "text",
-                            "text": {"content": "原文へのリンク: "},
-                            "annotations": {"bold": True}
-                        },
-                        {
-                            "type": "text",
-                            "text": {"content": target_url, "link": {"url": target_url}}
-                        }
-                    ]
-                }
+                "paragraph": {"rich_text": header_rich_text}
             }]
-            
+
             # Plus the ones translated from scraper
             translated_blocks.extend(self._process_scraped_elements(elements))
         else:
             translated_blocks = self._process_blocks(source_blocks)
+
+        # 念のため最終 sanitize: 2000 文字超の rich_text を全て分割し、
+        # ブロック数が 100 セグメント超なら paragraph を複数ブロックに展開する。
+        translated_blocks = sanitize_blocks(translated_blocks)
 
         # Slice blocks into chunks of 100 (Notion API limit)
         LIMIT = 100
@@ -317,9 +324,10 @@ class NotionPublisher:
                  post_text = xp.generate_post_text(gen_title, gen_title)
                  
                  # Add to properties
-                 # Property name: "X comment" (rich_text)
+                 # Property name: "X comment" (rich_text). DB プロパティの
+                 # rich_text も 1 セグメント 2000 文字制限が掛かるためチャンク化。
                  additional_props["X comment"] = {
-                     "rich_text": [{"text": {"content": post_text}}]
+                     "rich_text": make_text_rich_text(post_text or "")
                  }
                  logger.info(f"Generated X post text: {post_text[:30]}...")
                  
@@ -460,18 +468,27 @@ class NotionPublisher:
             # However, for non-media blocks, we can generally copy the content object.
             elif block_type in ["paragraph", "heading_1", "heading_2", "heading_3", "bulleted_list_item", "numbered_list_item", "to_do", "toggle", "quote", "callout"]:
                 # These have rich_text and potentially children (not included in GET unless expanded? API usually just gives metadata)
-                # We copy the property object (e.g., "paragraph": { "rich_text": [...] })
-                new_block[block_type] = content
-            
+                # We copy the property object (e.g., "paragraph": { "rich_text": [...] }).
+                # コピー元 rich_text が API 上限 (2000 文字/セグメント) を超える場合
+                # に備えて sanitize しておく。
+                content_copy = dict(content)
+                if "rich_text" in content_copy:
+                    content_copy["rich_text"] = sanitize_rich_text_array(
+                        content_copy.get("rich_text")
+                    )
+                new_block[block_type] = content_copy
+
             # Check for unsupported types or other cleanup?
             # Start simplistically.
             else:
                 # Copy as implies
                 new_block[block_type] = content
-                
+
             sanitized.append(new_block)
-            
-        return sanitized
+
+        # Final safety net: rich_text 長が 100 セグメント超になった場合は同種ブロック
+        # に分割する。
+        return sanitize_blocks(sanitized)
 
     def _create_placeholder_block(self) -> Dict[str, Any]:
         """
@@ -506,6 +523,10 @@ class NotionPublisher:
             if el_type == "image":
                 image_url = el.get("url")
                 if image_url:
+                    # Skip promotional/event flyer images
+                    if self.image_translator.is_promotional_image(image_url):
+                        logger.info(f"Skipping promotional image: {image_url[:80]}")
+                        continue
                     translated_blocks.append({
                         "object": "block",
                         "type": "image",
@@ -526,11 +547,13 @@ class NotionPublisher:
                 if el_type == "paragraph":
                     translated_blocks.append(self.formatter.create_text_block(translated_text))
                 else:
+                    # heading / bulleted_list_item は make_text_rich_text 経由で
+                    # 2000 文字ごとにセグメント分割する。
                     translated_blocks.append({
                         "object": "block",
                         "type": el_type,
                         el_type: {
-                            "rich_text": [{"type": "text", "text": {"content": translated_text}}]
+                            "rich_text": make_text_rich_text(translated_text)
                         }
                     })
         return translated_blocks
@@ -551,9 +574,10 @@ class NotionPublisher:
             block_type = block.get("type")
 
             if block_type == "image":
-                # Process image with translation table in toggle
+                # Process image (returns None if promotional/skipped)
                 image_block = self._process_image_block(block)
-                translated_blocks.append(image_block)
+                if image_block is not None:
+                    translated_blocks.append(image_block)
 
             elif block_type in ["paragraph", "heading_1", "heading_2", "heading_3", "bulleted_list_item", "numbered_list_item"]:
                 # Translate text blocks
@@ -598,12 +622,13 @@ class NotionPublisher:
             logger.warning("No image URL found")
             return self.formatter.create_text_block("画像URLが見つかりません")
 
-        # Skip image text extraction and translation
-        # result = self.image_translator.extract_and_translate_image_text(image_url)
-        # translations = result.get("translations", [])
+        # Skip promotional/event flyer images
+        if self.image_translator.is_promotional_image(image_url):
+            logger.info(f"Skipping promotional image: {image_url[:80]}")
+            return None  # Caller must filter out None
 
         # Simply return the image block without toggle or translation
-        logger.info(f"Skipping image translation for: {image_url}")
+        logger.info(f"Including image: {image_url[:80]}")
 
         return {
             "object": "block",
@@ -651,12 +676,7 @@ class NotionPublisher:
                 "object": "block",
                 "type": block_type,
                 block_type: {
-                    "rich_text": [
-                        {
-                            "type": "text",
-                            "text": {"content": translated_text}
-                        }
-                    ]
+                    "rich_text": make_text_rich_text(translated_text)
                 }
             }
 
@@ -665,12 +685,7 @@ class NotionPublisher:
                 "object": "block",
                 "type": block_type,
                 block_type: {
-                    "rich_text": [
-                        {
-                            "type": "text",
-                            "text": {"content": translated_text}
-                        }
-                    ]
+                    "rich_text": make_text_rich_text(translated_text)
                 }
             }
 
