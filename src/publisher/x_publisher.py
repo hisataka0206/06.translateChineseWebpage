@@ -177,7 +177,11 @@ class XPublisher:
         else:
             post_text = self.generate_post_text(page_title, content_snippet)
         
-        final_text = f"{post_text}\n\n詳細はこちら👇\n{page_url}"
+        # CTA絵文字「詳細はこちら👇」はXでスパム判定されIMPを大きく下げるため付与しない
+        # （_memory/domains/twitter.md 2026-05-12 発見・ルール2/8違反）。
+        # 本文のみを投稿し、リンク誘導は行わない方針。URLを残したい場合は
+        # final_text = f"{post_text}\n\n{page_url}" に変更する。
+        final_text = post_text
         
         try:
             logger.info(f"Posting to X:\n{final_text}")

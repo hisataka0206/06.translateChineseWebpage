@@ -63,3 +63,4 @@ workflows.md
 .env.local
 .DS_Store
 Thumbs.db
+.github/workflows/deploy-quiz.yml

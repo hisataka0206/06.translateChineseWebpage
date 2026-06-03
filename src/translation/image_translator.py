@@ -79,6 +79,67 @@ class ImageTextTranslator:
             logger.error(f"Error downloading/converting image: {e}")
             raise
 
+    def is_promotional_image(self, image_url: str) -> bool:
+        """
+        Classify whether an image is a promotional/event flyer that should be skipped.
+        Returns True if the image should be skipped (is promotional), False otherwise.
+
+        Args:
+            image_url: URL of the image to classify
+
+        Returns:
+            True if promotional/event flyer, False if content image (diagram, photo, chart, etc.)
+        """
+        try:
+            base64_image = self._download_and_encode_image(image_url)
+
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": (
+                                    "Look at this image and answer with only 'PROMOTIONAL' or 'CONTENT'.\n\n"
+                                    "Answer 'PROMOTIONAL' if the image is:\n"
+                                    "- An event flyer or conference announcement\n"
+                                    "- A promotional banner or advertisement\n"
+                                    "- An invitation card or registration QR code flyer\n"
+                                    "- A social media promotional graphic\n\n"
+                                    "Answer 'CONTENT' if the image is:\n"
+                                    "- A technical diagram or schematic\n"
+                                    "- A product photo or robot photo\n"
+                                    "- A chart, graph, or data visualization\n"
+                                    "- A screenshot of software or a website\n"
+                                    "- A news photo or article illustration\n\n"
+                                    "Answer with only one word: PROMOTIONAL or CONTENT"
+                                )
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": base64_image,
+                                    "detail": "low"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                max_tokens=10,
+                temperature=0.0
+            )
+
+            result = response.choices[0].message.content.strip().upper()
+            is_promo = "PROMOTIONAL" in result
+            logger.info(f"Image classification: {'PROMOTIONAL (skip)' if is_promo else 'CONTENT (keep)'} — {image_url[:80]}")
+            return is_promo
+
+        except Exception as e:
+            logger.warning(f"Image classification failed, defaulting to CONTENT: {e}")
+            return False  # Default to keeping image if classification fails
+
     def extract_and_translate_image_text(self, image_url: str) -> Dict[str, List[tuple]]:
         """
         Extract Chinese text from image and translate to Japanese

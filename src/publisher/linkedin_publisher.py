@@ -73,7 +73,9 @@ class LinkedInPublisher:
         else:
             post_text = self.generate_post_text(page_title, content_snippet)
             
-        full_text = f"{post_text}\n\n詳細はこちら👇\n{page_url}"
+        # CTA絵文字「詳細はこちら👇」は削除。LinkedInはXほどリンクを不利に
+        # 扱わないため、素のURLは残してリンク先へ誘導する。
+        full_text = f"{post_text}\n\n{page_url}"
 
         # API Endpoint
         api_url = "https://api.linkedin.com/v2/ugcPosts"

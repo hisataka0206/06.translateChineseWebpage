@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Headless runner for the Chinese->Japanese translation/publish pipeline.
+  Replaces the fragile scheduled-task + Spotlight + computer-use approach
+  (which failed because the Mac is asleep/locked at 03:00).
+
+  Runs run_translation.command every day at 09:00 (user is awake / Mac unlocked).
+
+  Install:
+    cp scripts/com.hisataka.humanoid-translate.plist ~/Library/LaunchAgents/
+    launchctl unload ~/Library/LaunchAgents/com.hisataka.humanoid-translate.plist 2>/dev/null
+    launchctl load   ~/Library/LaunchAgents/com.hisataka.humanoid-translate.plist
+  Verify:
+    launchctl list | grep humanoid-translate
+  Run once now (test):
+    launchctl start com.hisataka.humanoid-translate
+  Uninstall:
+    launchctl unload ~/Library/LaunchAgents/com.hisataka.humanoid-translate.plist
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.hisataka.humanoid-translate</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/hisatakamac/work/humanoidAsAService/Tools/translateChineseWebpage/run_translation.command</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/hisatakamac/work/humanoidAsAService/Tools/translateChineseWebpage</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <!-- If the Mac was asleep at 09:00, run as soon as it wakes. -->
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/hisatakamac/work/humanoidAsAService/Tools/translateChineseWebpage/logs/launchd.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/hisatakamac/work/humanoidAsAService/Tools/translateChineseWebpage/logs/launchd.err.log</string>
+</dict>
+</plist>
