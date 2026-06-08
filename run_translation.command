@@ -36,19 +36,8 @@ printf '%s EXIT=%s LOG=%s\n' \
   "$LOG" \
   > "$STATUS"
 
-# 結果が見やすいよう少し待機してからウィンドウを閉じる
-sleep 3
-
-# Terminal を自動で閉じる（設定で "シェルが終了したらウィンドウを閉じる" が ON のときは不要だが保険）
-osascript <<'OSA' >/dev/null 2>&1
-tell application "Terminal"
-  set _wins to windows
-  repeat with _w in _wins
-    try
-      if (busy of _w) is false then close _w saving no
-    end try
-  end repeat
-end tell
-OSA
+# 注: 以前ここに「Terminalウィンドウを自動で閉じる」osascriptがあったが、
+# launchd実行時に対話中のターミナルまで巻き込んで閉じてしまうため削除（2026-06-08）。
+# ヘッドレス(launchd)運用ではウィンドウ制御は不要。
 
 exit $EC
