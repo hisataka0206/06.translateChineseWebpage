@@ -164,28 +164,55 @@ class XPublisher:
             logger.error(f"Failed to generate X post text: {e}")
             return f"【翻訳記事】{title}"
 
-    def post(self, page_title: str, page_url: str, content_snippet: str = "", override_text: str = None):
+    def _upload_media(self, image_path: str):
+        """Upload an image via API v1.1 (required for media). Needs OAuth 1.0a keys."""
+        if not (self.consumer_key and self.consumer_secret and self.access_token and self.access_token_secret):
+            raise RuntimeError("Media upload requires OAuth 1.0a credentials")
+        auth = tweepy.OAuth1UserHandler(
+            self.consumer_key, self.consumer_secret,
+            self.access_token, self.access_token_secret)
+        api = tweepy.API(auth)
+        media = api.media_upload(image_path)
+        return media.media_id
+
+    def post(self, page_title: str, page_url: str, content_snippet: str = "", override_text: str = None, image_path: str = None):
         """
-        Generate text and post to X
+        Generate text and post to X. If image_path is given, attach it
+        (インフォグラフィック等。画像付き投稿はテキストのみの30〜40倍のIMP実績).
         """
         if not self.initialize_client():
             return
-            
+
         logger.info("Generating X post content...")
         if override_text:
             post_text = override_text
         else:
             post_text = self.generate_post_text(page_title, content_snippet)
-        
+
         # CTA絵文字「詳細はこちら👇」はXでスパム判定されIMPを大きく下げるため付与しない
         # （_memory/domains/twitter.md 2026-05-12 発見・ルール2/8違反）。
         # 本文のみを投稿し、リンク誘導は行わない方針。URLを残したい場合は
         # final_text = f"{post_text}\n\n{page_url}" に変更する。
         final_text = post_text
-        
+
+        media_ids = None
+        if image_path:
+            if os.path.exists(image_path):
+                try:
+                    media_ids = [self._upload_media(image_path)]
+                    logger.info(f"Media uploaded: {image_path}")
+                except Exception as e:
+                    # 画像アップロード失敗時はテキストのみで投稿せず中断する
+                    # （インフォグラフィック投稿で画像が落ちると意味がないため）
+                    logger.error(f"Media upload failed, aborting post: {e}")
+                    return False
+            else:
+                logger.error(f"image_path not found, aborting post: {image_path}")
+                return False
+
         try:
-            logger.info(f"Posting to X:\n{final_text}")
-            response = self.client.create_tweet(text=final_text)
+            logger.info(f"Posting to X (media={'yes' if media_ids else 'no'}):\n{final_text}")
+            response = self.client.create_tweet(text=final_text, media_ids=media_ids)
             logger.info(f"Posted to X successfully! ID: {response.data['id']}")
             return True
         except Exception as e:

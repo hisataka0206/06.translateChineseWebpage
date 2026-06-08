@@ -64,3 +64,4 @@ workflows.md
 .DS_Store
 Thumbs.db
 .github/workflows/deploy-quiz.yml
+queue/

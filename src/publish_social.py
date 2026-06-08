@@ -116,7 +116,23 @@ def run_social_publish():
                     # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
                     props_to_update["X comment"] = {"rich_text": make_text_rich_text(post_text or "")}
                 
-                if x_publisher.post(title, page_url, override_text=post_text):
+                # インフォグラフィック画像キュー: queue/<page_id>.png があれば画像付きで投稿する
+                # （2レーン運用: 通常投稿=テキスト / 特集インフォグラフィック=画像付き・週1）
+                image_path = None
+                pid_plain = page_id.replace("-", "")
+                for cand in (f"queue/{page_id}.png", f"queue/{pid_plain}.png"):
+                    if os.path.exists(cand):
+                        image_path = cand
+                        break
+
+                if x_publisher.post(title, page_url, override_text=post_text, image_path=image_path):
+                    if image_path:
+                        # 投稿済み画像は queue/posted/ へ退避（再添付防止・履歴保全）
+                        try:
+                            os.makedirs("queue/posted", exist_ok=True)
+                            os.rename(image_path, os.path.join("queue/posted", os.path.basename(image_path)))
+                        except OSError as e:
+                            logger.warning(f"Could not archive queue image: {e}")
                     props_to_update["X post"] = {"select": {"name": "Done"}}
                     logger.info("X Post Successful.")
                 else:
@@ -158,7 +174,78 @@ def run_social_publish():
             except Exception as e:
                 logger.error(f"Failed to update Notion: {e}")
 
+    # --- 特集インフォグラフィックレーン（週1） ---
+    publish_infographics(notion, x_publisher, parser)
+
     logger.info("Social publishing cycle completed.")
+
+
+# 「インフォグラフィック制作」DB（2026-06-05新設・2レーン運用）
+INFOGRAPHIC_DB_ID = "cf03c58a-8aa5-4aa9-9fa8-d552ad9fd7a4"
+
+
+def publish_infographics(notion, x_publisher, parser):
+    """特集インフォグラフィックレーン: 「インフォグラフィック制作」DBの X post=Go を投稿する。
+
+    通常レーンとの違い:
+    - 画像必須（queue/<page_id>.png が無ければ投稿しない）
+    - 投稿文必須（X comment が空なら投稿しない。タイトルからの自動生成はしない）
+    - 1回の実行で最大1件（週1レーンのため）
+    - 成功時は X post=Done / Status=Posted / Posted date=当日 を記録
+    """
+    logger.info("Scanning Infographic DB...")
+    filter_criteria = {"property": "X post", "select": {"equals": "Go"}}
+    try:
+        pages = notion.query_database(INFOGRAPHIC_DB_ID, filter_criteria)
+    except Exception as e:
+        logger.error(f"Failed to query infographic DB: {e}")
+        return
+    if not pages:
+        logger.info("No infographic pages with 'Go'.")
+        return
+    pages = pages[:1]
+
+    for page in pages:
+        page_id = page["id"]
+        title = parser.get_page_title(page)
+        props = page.get("properties", {})
+
+        comment = ""
+        if props.get("X comment", {}).get("rich_text"):
+            comment = props["X comment"]["rich_text"][0]["plain_text"]
+        if not comment:
+            logger.error(f"Infographic '{title}': X comment is empty. Skip (投稿文必須).")
+            continue
+
+        image_path = None
+        pid_plain = page_id.replace("-", "")
+        for cand in (f"queue/{page_id}.png", f"queue/{pid_plain}.png"):
+            if os.path.exists(cand):
+                image_path = cand
+                break
+        if not image_path:
+            logger.error(f"Infographic '{title}': queue image not found. Skip (画像必須).")
+            continue
+
+        if x_publisher.post(title, "", override_text=comment, image_path=image_path):
+            try:
+                os.makedirs("queue/posted", exist_ok=True)
+                os.rename(image_path, os.path.join("queue/posted", os.path.basename(image_path)))
+            except OSError as e:
+                logger.warning(f"Could not archive queue image: {e}")
+            from datetime import date
+            try:
+                notion.update_page_properties(page_id, {
+                    "X post": {"select": {"name": "Done"}},
+                    "Status": {"select": {"name": "Posted"}},
+                    "Posted date": {"date": {"start": date.today().isoformat()}},
+                })
+            except Exception as e:
+                logger.error(f"Posted but failed to update Notion: {e}")
+            logger.info(f"Infographic '{title}' posted successfully.")
+        else:
+            logger.error(f"Infographic '{title}' post failed.")
+
 
 if __name__ == "__main__":
     run_social_publish()
