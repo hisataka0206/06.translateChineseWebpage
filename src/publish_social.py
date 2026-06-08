@@ -68,20 +68,20 @@ def run_social_publish():
         pages = notion.query_database(dest_id, filter_criteria)
     except Exception as e:
         logger.error(f"Failed to query database: {e}")
-        return
+        pages = []
+
+    parser = NotionBlockParser()
 
     if not pages:
-        logger.info("No pages found with 'Go' status for X or LinkedIn.")
-        return
-        
-    # Limit to max 4 pages as requested
-    if len(pages) > 2:
-        logger.info(f"Found {len(pages)} pages. Limiting to 2.")
-        pages = pages[:2]
+        # 記事DBにGoが無くても、インフォグラフィックDBは別途処理する（早期returnしない）
+        logger.info("No pages found with 'Go' status for X or LinkedIn (article DB).")
     else:
-        logger.info(f"Found {len(pages)} pages to process.")
-    
-    parser = NotionBlockParser()
+        # Limit to max 2 pages as requested
+        if len(pages) > 2:
+            logger.info(f"Found {len(pages)} pages. Limiting to 2.")
+            pages = pages[:2]
+        else:
+            logger.info(f"Found {len(pages)} pages to process.")
     
     for page in pages:
         page_id = page["id"]
@@ -181,7 +181,8 @@ def run_social_publish():
 
 
 # 「インフォグラフィック制作」DB（2026-06-05新設・2レーン運用）
-INFOGRAPHIC_DB_ID = "cf03c58a-8aa5-4aa9-9fa8-d552ad9fd7a4"
+# databases.query は data source ID ではなく database ID を要する点に注意
+INFOGRAPHIC_DB_ID = "38339f5c65bb4b7093b993d4a72293b5"
 
 
 def publish_infographics(notion, x_publisher, parser):
