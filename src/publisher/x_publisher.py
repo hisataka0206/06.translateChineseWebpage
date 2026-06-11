@@ -10,6 +10,12 @@ from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 
+# 投稿文の自動生成に失敗したときに X comment へ書き込むエラーマーカーの接頭辞。
+# 以前は無意味な「【翻訳記事】<タイトル>」を投稿していたが、Xに出す価値がないため廃止し、
+# 代わりに原因付きのエラーを残して本人が気づけるようにする。publish_social 側もこの接頭辞で
+# 「エラーコメントは再投稿対象にしない／空とみなして再生成する」判定を行う。
+FALLBACK_ERROR_PREFIX = "【生成エラー】"
+
 class XPublisher:
     def __init__(self, config: Dict[str, Any]):
         """
@@ -40,8 +46,8 @@ class XPublisher:
 
         self.client: Optional[tweepy.Client] = None
 
-        # 投稿文生成がフォールバック（【翻訳記事】タイトルのみ）に落ちたかを示すフラグ。
-        # generate_post_text() の冒頭で False にリセットし、フォールバック時に True にする。
+        # 投稿文生成がエラーに落ちたかを示すフラグ。
+        # generate_post_text() の冒頭で False にリセットし、生成失敗時に True にする。
         self.generation_fell_back = False
         self.fallback_reason: Optional[str] = None
 
@@ -60,7 +66,7 @@ class XPublisher:
             import requests
             requests.post(
                 webhook,
-                json={"content": f"⚠️ X投稿文の生成に失敗しフォールバック（【翻訳記事】タイトルのみ）。投稿はスキップしました。\n理由: {message}"},
+                json={"content": f"⚠️ X投稿文の自動生成に失敗。投稿はスキップし、Notionの X comment にエラーを記録しました。\n原因: {message}"},
                 timeout=10,
             )
         except Exception as e:
@@ -155,7 +161,7 @@ class XPublisher:
             logger.warning(f"{prompt_path} not found.")
             self.generation_fell_back = True
             self.fallback_reason = f"{prompt_path} not found (cwd={os.getcwd()})"
-            return f"【翻訳記事】{title}" # Fallback
+            return f"{FALLBACK_ERROR_PREFIX}{self.fallback_reason}"
             
         try:
             with open(prompt_path, "r") as f:
@@ -194,7 +200,7 @@ class XPublisher:
             logger.error(f"Failed to generate X post text: {e}")
             self.generation_fell_back = True
             self.fallback_reason = str(e)
-            return f"【翻訳記事】{title}"
+            return f"{FALLBACK_ERROR_PREFIX}{self.fallback_reason}"
 
     def _upload_media(self, image_path: str):
         """Upload an image via API v1.1 (required for media). Needs OAuth 1.0a keys."""
@@ -220,14 +226,13 @@ class XPublisher:
             post_text = override_text
         else:
             post_text = self.generate_post_text(page_title, content_snippet)
-            # 生成がフォールバック（【翻訳記事】タイトルのみ）に落ちた場合は、
-            # 低品質な定型文をXに出さないため投稿自体をスキップする。
+            # 生成に失敗した場合は、無意味なエラー文字列をXに出さないため投稿自体をスキップする。
             # 主因は x_prompt.yaml の肥大化によるコンテキスト長超過（2026-06-04〜）。
             if self.generation_fell_back:
                 self._notify_failure(
                     f"title={page_title!r} reason={self.fallback_reason}"
                 )
-                logger.error("Skipping X post because text generation fell back to title-only.")
+                logger.error("Skipping X post: text generation failed (see X comment in Notion for cause).")
                 return False
 
         # CTA絵文字「詳細はこちら👇」はXでスパム判定されIMPを大きく下げるため付与しない

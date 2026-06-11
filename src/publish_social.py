@@ -3,13 +3,14 @@ import os
 import sys
 import yaml
 import logging
+from datetime import datetime
 from dotenv import load_dotenv
 
 # Add project root to path
 sys.path.append(os.getcwd())
 
 from src.notion.client import NotionClient
-from src.publisher.x_publisher import XPublisher
+from src.publisher.x_publisher import XPublisher, FALLBACK_ERROR_PREFIX
 from src.publisher.linkedin_publisher import LinkedInPublisher
 from src.notion.parser import NotionBlockParser
 from src.utils.notion_text import make_text_rich_text
@@ -108,35 +109,54 @@ def run_social_publish():
                 x_comment_prop = page.get("properties", {}).get("X comment", {})
                 if x_comment_prop.get("rich_text"):
                     existing_comment = x_comment_prop["rich_text"][0]["plain_text"]
-                
-                post_text = existing_comment
-                if not post_text:
-                    post_text = x_publisher.generate_post_text(title, title)
-                    # Queue update to save generated text
-                    # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
-                    props_to_update["X comment"] = {"rich_text": make_text_rich_text(post_text or "")}
-                
-                # インフォグラフィック画像キュー: queue/<page_id>.png があれば画像付きで投稿する
-                # （2レーン運用: 通常投稿=テキスト / 特集インフォグラフィック=画像付き・週1）
-                image_path = None
-                pid_plain = page_id.replace("-", "")
-                for cand in (f"queue/{page_id}.png", f"queue/{pid_plain}.png"):
-                    if os.path.exists(cand):
-                        image_path = cand
-                        break
 
-                if x_publisher.post(title, page_url, override_text=post_text, image_path=image_path):
-                    if image_path:
-                        # 投稿済み画像は queue/posted/ へ退避（再添付防止・履歴保全）
-                        try:
-                            os.makedirs("queue/posted", exist_ok=True)
-                            os.rename(image_path, os.path.join("queue/posted", os.path.basename(image_path)))
-                        except OSError as e:
-                            logger.warning(f"Could not archive queue image: {e}")
-                    props_to_update["X post"] = {"select": {"name": "Done"}}
-                    logger.info("X Post Successful.")
+                # 既存コメントは再利用するが、過去のエラー記録（【生成エラー】…）は
+                # 「未生成」とみなして再生成を試みる（エラー文をXに投稿しないため）。
+                post_text = existing_comment
+                gen_failed = False
+                if (not post_text) or post_text.startswith(FALLBACK_ERROR_PREFIX):
+                    post_text = x_publisher.generate_post_text(title, title)
+                    if x_publisher.generation_fell_back:
+                        # 生成失敗。無意味な定型文をXに出さず、原因付きエラーを
+                        # X comment に記録して本人が気づけるようにし、投稿はスキップする。
+                        gen_failed = True
+                        err_txt = (f"{FALLBACK_ERROR_PREFIX}{datetime.now():%Y-%m-%d %H:%M} "
+                                   f"投稿文の自動生成に失敗。原因: {x_publisher.fallback_reason}")
+                        props_to_update["X comment"] = {"rich_text": make_text_rich_text(err_txt)}
+                        logger.error(f"X post generation FAILED for '{title}': {x_publisher.fallback_reason}. "
+                                     f"Wrote error to Notion X comment, skipping post.")
+                        x_publisher._notify_failure(f"title={title!r} reason={x_publisher.fallback_reason}")
+                    else:
+                        # Queue update to save generated text
+                        # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
+                        props_to_update["X comment"] = {"rich_text": make_text_rich_text(post_text or "")}
+
+                if gen_failed:
+                    # 生成失敗時は X post=Go のまま残し（Doneにしない）、本人が気づいて
+                    # 対処できるようにする。x_prompt.yaml修正後の次回実行で再生成・投稿される。
+                    logger.info("Skipping X post for this page due to generation failure.")
                 else:
-                    logger.error("X Post Failed.")
+                    # インフォグラフィック画像キュー: queue/<page_id>.png があれば画像付きで投稿する
+                    # （2レーン運用: 通常投稿=テキスト / 特集インフォグラフィック=画像付き・週1）
+                    image_path = None
+                    pid_plain = page_id.replace("-", "")
+                    for cand in (f"queue/{page_id}.png", f"queue/{pid_plain}.png"):
+                        if os.path.exists(cand):
+                            image_path = cand
+                            break
+
+                    if x_publisher.post(title, page_url, override_text=post_text, image_path=image_path):
+                        if image_path:
+                            # 投稿済み画像は queue/posted/ へ退避（再添付防止・履歴保全）
+                            try:
+                                os.makedirs("queue/posted", exist_ok=True)
+                                os.rename(image_path, os.path.join("queue/posted", os.path.basename(image_path)))
+                            except OSError as e:
+                                logger.warning(f"Could not archive queue image: {e}")
+                        props_to_update["X post"] = {"select": {"name": "Done"}}
+                        logger.info("X Post Successful.")
+                    else:
+                        logger.error("X Post Failed.")
             except Exception as e:
                 logger.error(f"Error processing X post: {e}")
 
@@ -152,13 +172,24 @@ def run_social_publish():
                     existing_comment = li_comment_prop["rich_text"][0]["plain_text"]
                 
                 post_text = existing_comment
-                if not post_text:
+                li_gen_failed = False
+                if (not post_text) or post_text.startswith(FALLBACK_ERROR_PREFIX):
                     post_text = linkedin_publisher.generate_post_text(title, title)
-                    # Queue update to save generated text
-                    # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
-                    props_to_update["LinkedIn comment"] = {"rich_text": make_text_rich_text(post_text or "")}
-                
-                if linkedin_publisher.post(title, page_url, override_text=post_text):
+                    if linkedin_publisher.generation_fell_back:
+                        li_gen_failed = True
+                        err_txt = (f"{FALLBACK_ERROR_PREFIX}{datetime.now():%Y-%m-%d %H:%M} "
+                                   f"投稿文の自動生成に失敗。原因: {linkedin_publisher.fallback_reason}")
+                        props_to_update["LinkedIn comment"] = {"rich_text": make_text_rich_text(err_txt)}
+                        logger.error(f"LinkedIn post generation FAILED for '{title}': {linkedin_publisher.fallback_reason}. "
+                                     f"Wrote error to Notion LinkedIn comment, skipping post.")
+                    else:
+                        # Queue update to save generated text
+                        # rich_text プロパティ 1 セグメント 2000 文字制限への防御。
+                        props_to_update["LinkedIn comment"] = {"rich_text": make_text_rich_text(post_text or "")}
+
+                if li_gen_failed:
+                    logger.info("Skipping LinkedIn post for this page due to generation failure.")
+                elif linkedin_publisher.post(title, page_url, override_text=post_text):
                     props_to_update["LinkedIn post"] = {"select": {"name": "Done"}}
                     logger.info("LinkedIn Post Successful.")
                 else:
@@ -192,6 +223,8 @@ def publish_infographics(notion, x_publisher, parser):
     - 画像必須（queue/<page_id>.png が無ければ投稿しない）
     - 投稿文必須（X comment が空なら投稿しない。タイトルからの自動生成はしない）
     - 1回の実行で最大1件（週1レーンのため）
+    - 最小投稿間隔ガード: 直近の特集インフォグラフィック投稿から MIN_INFOGRAPHIC_GAP_DAYS 未満なら、
+      Goが複数あってもこの実行では投稿しない（毎日連投を防ぎ最低3日空ける。本人指示 2026-06-10）
     - 成功時は X post=Done / Status=Posted / Posted date=当日 を記録
     """
     logger.info("Scanning Infographic DB...")
@@ -204,6 +237,39 @@ def publish_infographics(notion, x_publisher, parser):
     if not pages:
         logger.info("No infographic pages with 'Go'.")
         return
+
+    # --- 最小投稿間隔ガード（本人指示 2026-06-10: 最低3日空ける） ---
+    # 直近の特集インフォグラフィック投稿日（Posted date の最大値）を見て、
+    # MIN_INFOGRAPHIC_GAP_DAYS 未満しか経っていなければ、この実行はスキップする。
+    # cron は毎日回るが、これにより実投稿は最短でも MIN_INFOGRAPHIC_GAP_DAYS 間隔になる。
+    # 失敗・スキップした日も翌日以降に自動で再評価されるため取りこぼさない。
+    from datetime import date
+    MIN_INFOGRAPHIC_GAP_DAYS = 3
+    try:
+        posted = notion.query_database(
+            INFOGRAPHIC_DB_ID,
+            {"property": "Posted date", "date": {"is_not_empty": True}})
+        last_posted = None
+        for pp in posted:
+            d = pp.get("properties", {}).get("Posted date", {}).get("date")
+            if d and d.get("start"):
+                try:
+                    dd = date.fromisoformat(d["start"][:10])
+                except ValueError:
+                    continue
+                if last_posted is None or dd > last_posted:
+                    last_posted = dd
+        if last_posted is not None:
+            gap = (date.today() - last_posted).days
+            if gap < MIN_INFOGRAPHIC_GAP_DAYS:
+                logger.info(
+                    f"Infographic spacing guard: last post {last_posted} "
+                    f"({gap}d ago) < {MIN_INFOGRAPHIC_GAP_DAYS}d gap. Skip this run.")
+                return
+    except Exception as e:
+        # ガードの判定に失敗しても投稿自体は止めない（フェイルオープン）。
+        logger.warning(f"Spacing guard check failed ({e}); proceeding without it.")
+
     pages = pages[:1]
 
     for page in pages:

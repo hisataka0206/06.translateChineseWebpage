@@ -5,6 +5,8 @@ import requests
 from typing import Dict, Any, Optional
 from openai import OpenAI
 
+from src.publisher.x_publisher import FALLBACK_ERROR_PREFIX
+
 logger = logging.getLogger(__name__)
 
 class LinkedInPublisher:
@@ -24,19 +26,27 @@ class LinkedInPublisher:
         self.openai_client = OpenAI(api_key=api_key)
         self.model = config.get("models", {}).get("x_post", "gpt-4") # Reusing x_post model for now
 
+        # 生成がエラーに落ちたかを示すフラグ（X側と同じ仕組み）。
+        self.generation_fell_back = False
+        self.fallback_reason: Optional[str] = None
+
     def generate_post_text(self, title: str, content_summary: str) -> str:
         """
         Generate post text using LLM.
         For now, reusing X prompt structure but maybe allow longer text?
         LinkedIn allows 3000 chars, so we can be more verbose if needed.
         """
+        self.generation_fell_back = False
+        self.fallback_reason = None
         # TODO: Separate prompt for LinkedIn if needed. For now reusing the logic but maybe different max tokens.
         prompt_path = "config/linkedin_prompt.yaml"
         if not os.path.exists(prompt_path):
             prompt_path = "config/x_prompt.yaml" # Fallback to X prompt
 
         if not os.path.exists(prompt_path):
-             return f"【翻訳記事】{title}"
+             self.generation_fell_back = True
+             self.fallback_reason = f"{prompt_path} not found (cwd={os.getcwd()})"
+             return f"{FALLBACK_ERROR_PREFIX}{self.fallback_reason}"
 
         try:
             with open(prompt_path, "r") as f:
@@ -57,7 +67,9 @@ class LinkedInPublisher:
             
         except Exception as e:
             logger.error(f"Failed to generate LinkedIn post text: {e}")
-            return f"【翻訳記事】{title}"
+            self.generation_fell_back = True
+            self.fallback_reason = str(e)
+            return f"{FALLBACK_ERROR_PREFIX}{self.fallback_reason}"
 
     def post(self, page_title: str, page_url: str, content_snippet: str = "", override_text: str = None) -> bool:
         """
