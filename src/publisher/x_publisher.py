@@ -213,10 +213,14 @@ class XPublisher:
         media = api.media_upload(image_path)
         return media.media_id
 
-    def post(self, page_title: str, page_url: str, content_snippet: str = "", override_text: str = None, image_path: str = None):
+    def post(self, page_title: str, page_url: str, content_snippet: str = "", override_text: str = None, image_path: str = None, source_url: str = None):
         """
         Generate text and post to X. If image_path is given, attach it
         (インフォグラフィック等。画像付き投稿はテキストのみの30〜40倍のIMP実績).
+        source_url を渡すと、本体ツイートへの返信（スレッド2件目）として
+        その公開URLを投稿する。Xは本文に外部リンクを含めるとリーチが落ちるため、
+        本文にはURLを入れず出典リンクはスレッドに分離する方針（本人指示 2026-06-12）。
+        非公開ページの内部URLは渡さない想定（呼び出し側で public_url のみ渡す）。
         """
         if not self.initialize_client():
             return
@@ -237,8 +241,8 @@ class XPublisher:
 
         # CTA絵文字「詳細はこちら👇」はXでスパム判定されIMPを大きく下げるため付与しない
         # （_memory/domains/twitter.md 2026-05-12 発見・ルール2/8違反）。
-        # 本文のみを投稿し、リンク誘導は行わない方針。URLを残したい場合は
-        # final_text = f"{post_text}\n\n{page_url}" に変更する。
+        # 本文にはURLを入れない（リーチ低下回避）。出典の公開URLは source_url として
+        # 本体ツイートへの返信（スレッド2件目）に分離して投稿する。
         final_text = post_text
 
         media_ids = None
@@ -259,8 +263,20 @@ class XPublisher:
         try:
             logger.info(f"Posting to X (media={'yes' if media_ids else 'no'}):\n{final_text}")
             response = self.client.create_tweet(text=final_text, media_ids=media_ids)
-            logger.info(f"Posted to X successfully! ID: {response.data['id']}")
-            return True
+            tweet_id = response.data['id']
+            logger.info(f"Posted to X successfully! ID: {tweet_id}")
         except Exception as e:
             logger.error(f"Failed to post to X: {e}")
             return False
+
+        # スレッド2件目（本体への返信）に出典の公開URLを置く。
+        # 返信の失敗は本体投稿の成否に影響させない（本体は成功扱いのまま）。
+        if source_url:
+            try:
+                reply_text = f"出典・全文: {source_url}"
+                self.client.create_tweet(text=reply_text, in_reply_to_tweet_id=tweet_id)
+                logger.info(f"Posted source URL as reply to {tweet_id}")
+            except Exception as e:
+                logger.warning(f"Main tweet OK but failed to post source-URL reply: {e}")
+
+        return True

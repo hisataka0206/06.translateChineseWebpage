@@ -145,7 +145,10 @@ def run_social_publish():
                             image_path = cand
                             break
 
-                    if x_publisher.post(title, page_url, override_text=post_text, image_path=image_path):
+                    # 出典の公開URLはスレッド2件目に置く（本人指示 2026-06-12）。
+                    # 非公開ページ(public_urlがnull)の内部URLは渡さない＝リンク切れ防止。
+                    if x_publisher.post(title, page_url, override_text=post_text,
+                                        image_path=image_path, source_url=page.get("public_url")):
                         if image_path:
                             # 投稿済み画像は queue/posted/ へ退避（再添付防止・履歴保全）
                             try:
