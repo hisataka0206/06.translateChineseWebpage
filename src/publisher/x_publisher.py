@@ -273,8 +273,7 @@ class XPublisher:
         # 返信の失敗は本体投稿の成否に影響させない（本体は成功扱いのまま）。
         if source_url:
             try:
-                reply_text = f"出典・全文: {source_url}"
-                self.client.create_tweet(text=reply_text, in_reply_to_tweet_id=tweet_id)
+                self.client.create_tweet(text=source_url, in_reply_to_tweet_id=tweet_id)
                 logger.info(f"Posted source URL as reply to {tweet_id}")
             except Exception as e:
                 logger.warning(f"Main tweet OK but failed to post source-URL reply: {e}")
