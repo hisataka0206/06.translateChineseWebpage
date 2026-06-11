@@ -37,9 +37,35 @@ class XPublisher:
         api_key = os.getenv("OPENAI_API_KEY") or config.get("openai", {}).get("api_key")
         self.openai_client = OpenAI(api_key=api_key)
         self.model = config.get("models", {}).get("x_post", "gpt-4")
-        
+
         self.client: Optional[tweepy.Client] = None
-        
+
+        # 投稿文生成がフォールバック（【翻訳記事】タイトルのみ）に落ちたかを示すフラグ。
+        # generate_post_text() の冒頭で False にリセットし、フォールバック時に True にする。
+        self.generation_fell_back = False
+        self.fallback_reason: Optional[str] = None
+
+    def _notify_failure(self, message: str):
+        """
+        投稿文生成がフォールバックに落ちたことを通知する。
+        必ず grep しやすいマーカー付きで ERROR ログに残し、
+        環境変数 DISCORD_WEBHOOK_URL が設定されていれば Discord にも送る
+        （未設定ならログのみ。webhook URL はリポジトリにハードコードしない）。
+        """
+        logger.error(f"X_POST_FALLBACK_USED: {message}")
+        webhook = os.getenv("DISCORD_WEBHOOK_URL")
+        if not webhook:
+            return
+        try:
+            import requests
+            requests.post(
+                webhook,
+                json={"content": f"⚠️ X投稿文の生成に失敗しフォールバック（【翻訳記事】タイトルのみ）。投稿はスキップしました。\n理由: {message}"},
+                timeout=10,
+            )
+        except Exception as e:
+            logger.warning(f"Failed to send fallback notification: {e}")
+
     def _load_tokens(self) -> Dict[str, Any]:
         if not os.path.exists(self.tokens_path):
             return None
@@ -122,9 +148,13 @@ class XPublisher:
 
     def generate_post_text(self, title: str, content_summary: str) -> str:
         """Generate post text using LLM and prompt file"""
+        self.generation_fell_back = False
+        self.fallback_reason = None
         prompt_path = "config/x_prompt.yaml"
         if not os.path.exists(prompt_path):
             logger.warning(f"{prompt_path} not found.")
+            self.generation_fell_back = True
+            self.fallback_reason = f"{prompt_path} not found (cwd={os.getcwd()})"
             return f"【翻訳記事】{title}" # Fallback
             
         try:
@@ -162,6 +192,8 @@ class XPublisher:
             
         except Exception as e:
             logger.error(f"Failed to generate X post text: {e}")
+            self.generation_fell_back = True
+            self.fallback_reason = str(e)
             return f"【翻訳記事】{title}"
 
     def _upload_media(self, image_path: str):
@@ -188,6 +220,15 @@ class XPublisher:
             post_text = override_text
         else:
             post_text = self.generate_post_text(page_title, content_snippet)
+            # 生成がフォールバック（【翻訳記事】タイトルのみ）に落ちた場合は、
+            # 低品質な定型文をXに出さないため投稿自体をスキップする。
+            # 主因は x_prompt.yaml の肥大化によるコンテキスト長超過（2026-06-04〜）。
+            if self.generation_fell_back:
+                self._notify_failure(
+                    f"title={page_title!r} reason={self.fallback_reason}"
+                )
+                logger.error("Skipping X post because text generation fell back to title-only.")
+                return False
 
         # CTA絵文字「詳細はこちら👇」はXでスパム判定されIMPを大きく下げるため付与しない
         # （_memory/domains/twitter.md 2026-05-12 発見・ルール2/8違反）。
